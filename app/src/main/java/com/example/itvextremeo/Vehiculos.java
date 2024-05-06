@@ -52,14 +52,14 @@ public class Vehiculos extends AppCompatActivity {
         eliminar = findViewById(R.id.button4);
 
 
-        String[]datosSpinner = {"Hola","Adios"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, datosSpinner);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //String[]datosSpinner = {"Hola","Adios"};
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, datosSpinner);
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         new tipoVehiculo().execute();
 
         // Asignar adaptador al Spinner
-        tipoVehiculo.setAdapter(adapter);
+        //tipoVehiculo.setAdapter(adapter);
 
         añadir.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,14 +167,11 @@ public class Vehiculos extends AppCompatActivity {
                 int valor = Integer.parseInt(datosSpinner[i + 1]);
                 vehiculos.add(new TipoVehiculo(nombre, valor));
             }
-
             // Crear un adaptador con los objetos Vehiculo
             ArrayAdapter<TipoVehiculo> adapter = new ArrayAdapter<>(Vehiculos.this, android.R.layout.simple_spinner_dropdown_item, vehiculos);
 
             // Establecer el adaptador en el Spinner
             tipoVehiculo.setAdapter(adapter);
-            //Toast.makeText(Vehiculos.this,tipoVehiculo.getSelectedItem().toString(),Toast.LENGTH_LONG).show();
-
         }
     }
 

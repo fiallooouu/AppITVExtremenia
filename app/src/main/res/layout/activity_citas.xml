@@ -67,19 +67,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.433">
 
-        <EditText
-            android:id="@+id/editTextMatricula"
+
+        <Spinner
+            android:id="@+id/spinner3Matricula"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/redondeotexto"
-            android:ems="10"
-            android:hint="Matricula"
-            android:inputType="text"
-            android:paddingStart="10dp"
-            android:textColor="#000000"
-            android:textStyle="bold" />
+            android:paddingStart="5dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,16 +110,23 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spinner"
+        <TextView
+            android:id="@+id/txtViewTipoVehiculo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:background="@drawable/redondeotexto"
-            android:paddingStart="5dp" />
+            android:ems="10"
+            android:gravity="start|center_vertical"
+            android:inputType="text"
+            android:paddingStart="10dp"
+            android:text="Tipo Vehiculo"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/spinner2TipoInspec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
