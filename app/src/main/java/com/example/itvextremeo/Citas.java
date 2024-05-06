@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class Citas extends AppCompatActivity {
+    String idActual;
     private TextView fechatxt, fechatxtDelete;
     private Button inicio, car, cita, perfil, btnfecha, btnfechaDelete;
 
@@ -22,6 +23,9 @@ public class Citas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_citas);
+
+        Intent intent = getIntent();
+        idActual = intent.getStringExtra("idUsu");
 
         inicio = findViewById(R.id.buttonInicio3);
         car = findViewById(R.id.buttonCar3);
@@ -54,6 +58,7 @@ public class Citas extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Citas.this, Inicio.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -64,6 +69,7 @@ public class Citas extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Citas.this, Vehiculos.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -74,6 +80,7 @@ public class Citas extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Citas.this, Citas.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -84,6 +91,7 @@ public class Citas extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Citas.this, Perfil.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();

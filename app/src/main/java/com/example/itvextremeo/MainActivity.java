@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         iniciarSesion = findViewById(R.id.buttonIniciarSesion);
         registrar = findViewById(R.id.buttonRegistrar);
 
+        correo.setText("jorgo@gmail.com");
+        contraseña.setText("123");
+
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,24 +73,29 @@ public class MainActivity extends AppCompatActivity {
 
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("correo", params[0]);
-            postDataParams.put("contraseña", params[1]);
+            postDataParams.put("contrasena", params[1]);
 
             return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/iniciarSesion.php", postDataParams);
         }
-
         @Override
         protected void onPostExecute(String result) {
             //Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
-            //System.out.println(result);
-            if(result.equals("true")){
+            //String[] partes = result.split(",");
+            String[] partes = result.trim().split(",");
+            // Asignar cada parte a las variables correspondientes
+            String ID = partes[0];
+            String opc = partes[1];
+
+            if(opc.equals("true")){
                 Intent intent = new Intent(MainActivity.this, Inicio.class);
-                intent.putExtra("gmail", correo.getText().toString().trim());
+                intent.putExtra("idUsu", ID);
                 startActivity(intent);
                 finish();
-            }else if(result.equals("false")) {
+            } else if(opc.equals("false")) {
                 Toast.makeText(MainActivity.this, "Credenciales erroneas", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto

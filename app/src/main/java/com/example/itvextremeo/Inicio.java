@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Inicio extends AppCompatActivity {
 
-    String correoActual;
+    String correoActual, idActual, nameActual, apeActual, teleActual;
 
     ListView misCitas, misVehiculos;
 
@@ -26,7 +26,7 @@ public class Inicio extends AppCompatActivity {
         setContentView(R.layout.activity_inicio);
 
         Intent intent = getIntent();
-        correoActual = intent.getStringExtra("gmail");
+        idActual = intent.getStringExtra("idUsu");
 
         //Botones
         inicio = findViewById(R.id.buttonInicio);
@@ -39,14 +39,8 @@ public class Inicio extends AppCompatActivity {
         misVehiculos = findViewById(R.id.listVehiculos);
 
 
-
+/*
         ArrayList<String> listaDatos = new ArrayList<>();
-        listaDatos.add(correoActual);
-        listaDatos.add(correoActual);
-        listaDatos.add(correoActual);
-        listaDatos.add(correoActual);
-        listaDatos.add(correoActual);
-        listaDatos.add(correoActual);
         listaDatos.add(correoActual);
         listaDatos.add(correoActual);
 
@@ -57,7 +51,7 @@ public class Inicio extends AppCompatActivity {
         //android.R.layout.simple_list_item_single_choice: Muestra una sola línea de texto con un botón de selección a la derecha. Solo un elemento puede estar seleccionado a la vez.
         //android.R.layout.simple_list_item_multiple_choice: Similar a simple_list_item_single_choice, pero permite seleccionar múltiples elementos.
         ArrayAdapter<String> adaptador = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, listaDatos);
-        misCitas.setAdapter(adaptador);
+        misCitas.setAdapter(adaptador);*/
 
 
 
@@ -66,7 +60,7 @@ public class Inicio extends AppCompatActivity {
 
 
 
-
+/*
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,12 +69,13 @@ public class Inicio extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 finish();
             }
-        });
+        });*/
 
         car.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Inicio.this, Vehiculos.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -91,6 +86,7 @@ public class Inicio extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Inicio.this, Citas.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -101,6 +97,7 @@ public class Inicio extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Inicio.this, Perfil.class);
+                intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();

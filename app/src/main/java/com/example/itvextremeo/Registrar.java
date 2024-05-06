@@ -44,7 +44,7 @@ public class Registrar extends AppCompatActivity {
                 //Intent intent = new Intent(Registrar.this, MainActivity.class);
                 //startActivity(intent);
                 String name = nombre.getText().toString().trim();
-                String ape = apellido.getText().toString().trim();
+                String ape = apellido.getText().toString();
                 String tele = telefono.getText().toString().trim();
                 String corre = correo.getText().toString().trim();
                 String contra = contrasena.getText().toString().trim();
