@@ -68,103 +68,219 @@
         app:layout_constraintVertical_bias="0.433">
 
 
-        <Spinner
-            android:id="@+id/spinner3Matricula"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/redondeotexto"
-            android:paddingStart="5dp" />
-
-
         <LinearLayout
+            android:id="@+id/layoutPrinciBorrado"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Matricula"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinner3Matricula"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/redondeotexto"
+                        android:paddingStart="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="Tipo Vehiculo"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtViewTipoVehiculo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/redondeotexto"
+                        android:ems="10"
+                        android:gravity="start|center_vertical"
+                        android:inputType="text"
+                        android:paddingStart="10dp"
+                        android:text="Tipo Vehiculo"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/editFechatxt"
-                android:layout_width="162dp"
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_weight="1"
-                android:background="@drawable/redondeotexto"
-                android:ems="10"
-                android:gravity="center"
-                android:inputType="text"
-                android:textColor="#000000"
-                android:textSize="16sp"
+                android:layout_marginBottom="3dp"
+                android:text="Fecha Cita"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-            <Button
-                android:id="@+id/button5Fecha"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/editFechatxt"
+                    android:layout_width="162dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/redondeotexto"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/button5Fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/azul_desactivado"
+                    android:text="Fecha"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text="Hora Cita"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinnerHora"
+                    android:layout_width="162dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/redondeotexto"
+                    android:paddingStart="5dp" />
+
+                <Button
+                    android:id="@+id/button2Horas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/azul_desactivado"
+                    android:text="Horas"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo Inspección"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner2TipoInspec"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/redondeotexto"
+                    android:paddingStart="5dp" />
+
+                <TextView
+                    android:id="@+id/editTextText5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/redondeotexto"
+                    android:ems="10"
+                    android:gravity="start|center_vertical"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:text="Precio"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonPedirCita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/azul_desactivado"
-                android:text="Fecha"
+                android:text="Pedir Cita"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtViewTipoVehiculo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/redondeotexto"
-            android:ems="10"
-            android:gravity="start|center_vertical"
-            android:inputType="text"
-            android:paddingStart="10dp"
-            android:text="Tipo Vehiculo"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/spinner2TipoInspec"
+        <Switch
+            android:id="@+id/switchCitas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/redondeotexto"
-            android:paddingStart="5dp" />
-
-        <TextView
-            android:id="@+id/editTextText5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/redondeotexto"
-            android:ems="10"
-            android:gravity="start|center_vertical"
-            android:inputType="text"
-            android:paddingStart="10dp"
-            android:text="Precio"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/azul_desactivado"
-            android:text="Pedir Cita"
+            android:text="Borrar Cita"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/layoutTXTBorrado"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <EditText
                 android:id="@+id/editTextText7"
@@ -195,10 +311,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutBTNBorrado"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/button2BorrarCita"

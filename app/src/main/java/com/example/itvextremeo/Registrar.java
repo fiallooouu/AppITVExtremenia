@@ -1,5 +1,7 @@
 package com.example.itvextremeo;
 
+import static com.example.itvextremeo.Utils.IPEQUIPO;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -11,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class Registrar extends AppCompatActivity {
@@ -49,8 +53,9 @@ public class Registrar extends AppCompatActivity {
                 String corre = correo.getText().toString().trim();
                 String contra = contrasena.getText().toString().trim();
                 String recontra = repetirContrasena.getText().toString().trim();
+                String fechaActual = obtenerFechaActual();
                 if(contra.equals(recontra)){
-                    new AgregarUsuarioTask().execute(name, ape, tele, corre, contra, recontra);
+                    new AgregarUsuarioTask().execute(name, ape, tele, corre, contra, fechaActual);
                 }else{
                     Toast.makeText(Registrar.this, "Contraseñas no coinciden", Toast.LENGTH_LONG).show();
                 }
@@ -77,8 +82,8 @@ public class Registrar extends AppCompatActivity {
             postDataParams.put("tele", params[2]);
             postDataParams.put("correo", params[3]);
             postDataParams.put("pass", params[4]);
-            postDataParams.put("reppass", params[5]);
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/registrar.php", postDataParams);
+            postDataParams.put("fecha", params[5]);
+            return ConexiónPHP.enviarPost(IPEQUIPO+"/registrar.php", postDataParams);
         }
 
         @Override
@@ -91,5 +96,19 @@ public class Registrar extends AppCompatActivity {
                 }
 
         }
+    }
+
+    public static String obtenerFechaActual() {
+        // Obtener la fecha actual
+        Date fecha = new Date();
+
+        // Crear un formato de fecha personalizado
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
+        // Formatear la fecha actual según el formato personalizado
+        String fechaFormateada = formato.format(fecha);
+
+        // Devolver la fecha formateada
+        return fechaFormateada;
     }
 }

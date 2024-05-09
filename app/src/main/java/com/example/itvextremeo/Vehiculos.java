@@ -153,7 +153,7 @@ public class Vehiculos extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/tipoVehiculo.php");
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/tipoVehiculo.php");
         }
 
         @Override

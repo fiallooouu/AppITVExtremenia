@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             postDataParams.put("correo", params[0]);
             postDataParams.put("contrasena", params[1]);
 
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/iniciarSesion.php", postDataParams);
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/iniciarSesion.php", postDataParams);
         }
         @Override
         protected void onPostExecute(String result) {

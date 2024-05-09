@@ -169,7 +169,7 @@ public class Perfil extends AppCompatActivity {
             postDataParams.put("id", params[0]);
             postDataParams.put("pass", params[1]);
 
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/cambiarContrasena.php", postDataParams);
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/cambiarContrasena.php", postDataParams);
         }
         protected void onPostExecute(String result) {
             Toast.makeText(Perfil.this, result, Toast.LENGTH_LONG).show();
@@ -189,7 +189,7 @@ public class Perfil extends AppCompatActivity {
             postDataParams.put("tele", params[3]);
             postDataParams.put("corre", params[4]);
 
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/modificarPerfil.php", postDataParams);
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/modificarPerfil.php", postDataParams);
         }
         protected void onPostExecute(String result) {
             Toast.makeText(Perfil.this, result, Toast.LENGTH_LONG).show();
@@ -205,7 +205,7 @@ public class Perfil extends AppCompatActivity {
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("id", params[0]);
 
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/perfil.php", postDataParams);
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/perfil.php", postDataParams);
         }
 
         @Override
