@@ -2,12 +2,10 @@ package com.example.itvextremeo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.itvextremeo.modelo.InfoVehiculo;
 import com.example.itvextremeo.modelo.TipoInspeccion;
-import com.example.itvextremeo.modelo.TipoVehiculo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,11 +28,11 @@ import java.util.List;
 public class Citas extends AppCompatActivity {
     private String idActual, idTipoVehiculo, idIspeccion, idVehiculoSeleccionado;
     private Switch switchCita;
-    private Spinner matricula, tipoInspeccion, horas;
+    private Spinner matricula, tipoInspeccion, horas, matriculaDelete, horaDelete;
     private TextView fechatxt, fechatxtDelete, tipoVehiculo, precio, cabecera;
-    private Button inicio, car, cita, perfil, btnfecha, btnfechaDelete, btnCitaDelete, horaAct, btnPedirCita;
+    private Button inicio, car, cita, perfil, btnfecha, btnfechaDelete, horaAct, btnPedirCita, btnHoraDelete, btnBorrarCita;
     private ArrayList<String> horasDisponibles;
-    private View txtLayout, btnLayout, prinLayout;
+    private View  prinLayout, deleLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +43,8 @@ public class Citas extends AppCompatActivity {
         idActual = intent.getStringExtra("idUsu");
 
         //Layout
-        txtLayout = findViewById(R.id.layoutTXTBorrado);
-        btnLayout = findViewById(R.id.layoutBTNBorrado);
-        prinLayout = findViewById(R.id.layoutPrinciBorrado);
+        prinLayout = findViewById(R.id.layoutPrincipal);
+        deleLayout = findViewById(R.id.layoutBorrado);
 
         //Switch
         switchCita = findViewById(R.id.switchCitas);
@@ -58,17 +53,23 @@ public class Citas extends AppCompatActivity {
         matricula = findViewById(R.id.spinner3Matricula);
         tipoInspeccion = findViewById(R.id.spinner2TipoInspec);
         horas = findViewById(R.id.spinnerHora);
+        matriculaDelete = findViewById(R.id.spinnerMatriculaDelete);
+        horaDelete = findViewById(R.id.spinnerHoraDelete);
+
 
         //Botones
         inicio = findViewById(R.id.buttonInicio3);
         car = findViewById(R.id.buttonCar3);
         cita = findViewById(R.id.buttonCitas3);
         perfil = findViewById(R.id.buttonPefil3);
+
         btnfecha = findViewById(R.id.button5Fecha);
-        btnfechaDelete = findViewById(R.id.button6FechaDelete);
-        btnCitaDelete = findViewById(R.id.button2BorrarCita);
+        btnfechaDelete = findViewById(R.id.btnFechaDelete);
         horaAct = findViewById(R.id.button2Horas);
         btnPedirCita = findViewById(R.id.buttonPedirCita);
+        btnHoraDelete = findViewById(R.id.btnHoraDelete);
+        btnBorrarCita = findViewById(R.id.btnBorrarCita);
+
 
         //TextView
         fechatxt = findViewById(R.id.editFechatxt);
@@ -85,16 +86,18 @@ public class Citas extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    txtLayout.setVisibility(View.VISIBLE);
-                    btnLayout.setVisibility(View.VISIBLE);
+                    deleLayout.setVisibility(View.VISIBLE);
                     prinLayout.setVisibility(View.GONE);
                     cabecera.setText("Borrar Cita");
 
                 } else {
-                    txtLayout.setVisibility(View.GONE);
-                    btnLayout.setVisibility(View.GONE);
+                    deleLayout.setVisibility(View.GONE);
                     prinLayout.setVisibility(View.VISIBLE);
                     cabecera.setText("Pedir Cita");
+                    Intent intent = new Intent(Citas.this, Citas.class);
+                    intent.putExtra("idUsu", idActual);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
                 }
             }
         });
@@ -126,6 +129,22 @@ public class Citas extends AppCompatActivity {
                 }
             }
         });
+        btnBorrarCita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!matriculaDelete.getSelectedItem().toString().isEmpty() && !fechatxtDelete.getText().toString().isEmpty() && !horaDelete.getSelectedItem().toString().isEmpty()){
+                    InfoVehiculo vehiculoSeleccionado = (InfoVehiculo) matriculaDelete.getSelectedItem();
+                    idVehiculoSeleccionado = vehiculoSeleccionado.getMatricula();
+
+                    String fech = fechatxtDelete.getText().toString().trim();
+                    String hor = horaDelete.getSelectedItem().toString().trim();
+                    String idVeh = idVehiculoSeleccionado;
+
+                    new borrarCita().execute(idVeh,fech,hor);
+
+                }
+            }
+        });
 
         horaAct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +157,10 @@ public class Citas extends AppCompatActivity {
 
             }
         });
-
-        btnCitaDelete.setOnClickListener(new View.OnClickListener() {
+        btnHoraDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                cargarTodasHoras();
             }
         });
 
@@ -243,6 +261,19 @@ public class Citas extends AppCompatActivity {
         });
     }
 
+    private void cargarTodasHoras() {
+        String[] horasArray = {"09:00:00", "09:15:00", "09:30:00", "09:45:00", "10:00:00", "10:15:00", "10:30:00", "10:45:00",
+                "11:00:00", "11:15:00", "11:30:00", "11:45:00", "12:00:00", "12:15:00", "12:30:00", "12:45:00",
+                "13:00:00", "13:15:00", "13:30:00", "13:45:00", "14:00:00", "14:15:00", "14:30:00", "14:45:00",
+                "16:00:00", "16:15:00", "16:30:00", "16:45:00", "17:00:00", "17:15:00", "17:30:00", "17:45:00",
+                "18:00:00", "18:15:00", "18:30:00", "18:45:00", "19:00:00", "19:15:00", "19:30:00", "19:45:00", "20:00:00"};
+
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(Citas.this, android.R.layout.simple_spinner_item, horasArray);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        horaDelete.setAdapter(adapter);
+    }
+
     //Extraemos la matricula y el tipo de vehiculo
     private class infoVehiculo extends AsyncTask<String, Void, String> {
 
@@ -272,6 +303,7 @@ public class Citas extends AppCompatActivity {
 
             // Establecer el adaptador en el Spinner de matrículas
             matricula.setAdapter(adapter);
+            matriculaDelete.setAdapter(adapter);
 
 
         }
@@ -338,13 +370,7 @@ public class Citas extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-
             String fecha = fechatxt.getText().toString().trim();
-
-
-            //String fecha = fechatxt.getText().toString().trim();
-            //new extraerHoras().execute(fecha);
-
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("hora", fecha);
 
@@ -401,6 +427,34 @@ public class Citas extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
+        }
+    }
+    private class borrarCita extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            HashMap<String, String> postDataParams = new HashMap<>();
+            postDataParams.put("matricu", params[0]);
+            postDataParams.put("fecha", params[1]);
+            postDataParams.put("hora", params[2]);
+
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/borrarCita.php", postDataParams);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(result.equals("No se encontro la cita con esos datos")){
+                Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
+
+            }else{
+                Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Citas.this, Citas.class);
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+
+            }
         }
     }
 

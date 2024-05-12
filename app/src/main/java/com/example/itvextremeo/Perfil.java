@@ -20,7 +20,7 @@ public class Perfil extends AppCompatActivity {
     String idActual;
     private Switch modificarDatos ,cambiarContraseña;
     private EditText nombre, apellido, telefono, correo, contraseña, repetirContraseña;
-    private Button inicio, car, cita, perfil, btnCambiarContraseña, actualizar;
+    private Button inicio, car, cita, perfil, btnCambiarContraseña, actualizar, cerrarSesion;
 
 
     @Override
@@ -43,6 +43,7 @@ public class Perfil extends AppCompatActivity {
         perfil = findViewById(R.id.buttonPefil4);
         btnCambiarContraseña = findViewById(R.id.buttonCambiarContraseña);
         actualizar = findViewById(R.id.button5Actualizar);
+        cerrarSesion = findViewById(R.id.btnCerrarSesion);
         //Switch
         modificarDatos = findViewById(R.id.switchModDatos);
         cambiarContraseña = findViewById(R.id.switchModContra);
@@ -158,7 +159,18 @@ public class Perfil extends AppCompatActivity {
                 finish();
             }
         });
+
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Perfil.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
+
+
 
     private class modificarContraseña extends AsyncTask<String, Void, String> {
 
