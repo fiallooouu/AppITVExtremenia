@@ -132,7 +132,11 @@ public class Citas extends AppCompatActivity {
         btnBorrarCita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!matriculaDelete.getSelectedItem().toString().isEmpty() && !fechatxtDelete.getText().toString().isEmpty() && !horaDelete.getSelectedItem().toString().isEmpty()){
+                InfoVehiculo infoVehiculo = (InfoVehiculo) matriculaDelete.getSelectedItem();
+                String matriSelec = infoVehiculo.getMatricula();
+                //int hola = horaDelete.getSelectedItemPosition();
+
+                if(!matriSelec.isEmpty() && !fechatxtDelete.getText().toString().isEmpty() && horaDelete.getSelectedItemPosition() != -1){
                     InfoVehiculo vehiculoSeleccionado = (InfoVehiculo) matriculaDelete.getSelectedItem();
                     idVehiculoSeleccionado = vehiculoSeleccionado.getMatricula();
 
@@ -142,6 +146,8 @@ public class Citas extends AppCompatActivity {
 
                     new borrarCita().execute(idVeh,fech,hor);
 
+                }else{
+                    Toast.makeText(Citas.this,"Completa todos los campos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -160,7 +166,7 @@ public class Citas extends AppCompatActivity {
         btnHoraDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cargarTodasHoras();
+                    cargarTodasHoras();
             }
         });
 
@@ -288,23 +294,33 @@ public class Citas extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            String[] datosSpinner = result.split(",");
-            List<InfoVehiculo> vehiculos = new ArrayList<>();
+            if(!result.equals("No hay tipo de vehiculos en la base de datos.")) {
+                String[] datosSpinner = result.split(",");
+                List<InfoVehiculo> vehiculos = new ArrayList<>();
 
-            vehiculos.add(new InfoVehiculo("", 1));
-            // Convertir los datos obtenidos en objetos InfoVehiculo y agregarlos a la lista
-            for (int i = 0; i < datosSpinner.length; i += 2) {
-                String matricula = datosSpinner[i];
-                int idTipoVehiculo = Integer.parseInt(datosSpinner[i + 1]);
-                vehiculos.add(new InfoVehiculo(matricula, idTipoVehiculo));
+                vehiculos.add(new InfoVehiculo("", 1));
+                // Convertir los datos obtenidos en objetos InfoVehiculo y agregarlos a la lista
+                for (int i = 0; i < datosSpinner.length; i += 2) {
+                    String matricula = datosSpinner[i];
+                    int idTipoVehiculo = Integer.parseInt(datosSpinner[i + 1]);
+                    vehiculos.add(new InfoVehiculo(matricula, idTipoVehiculo));
+                }
+                // Crear un adaptador con los objetos InfoVehiculo
+                ArrayAdapter<InfoVehiculo> adapter = new ArrayAdapter<>(Citas.this, android.R.layout.simple_spinner_dropdown_item, vehiculos);
+
+                // Establecer el adaptador en el Spinner de matrículas
+                matricula.setAdapter(adapter);
+                matriculaDelete.setAdapter(adapter);
+
+            }else{
+                Toast.makeText(Citas.this,"No tiene vehiculos para pedir cita",Toast.LENGTH_SHORT).show();
+                
+                Intent intent = new Intent(Citas.this, Vehiculos.class);
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
             }
-            // Crear un adaptador con los objetos InfoVehiculo
-            ArrayAdapter<InfoVehiculo> adapter = new ArrayAdapter<>(Citas.this, android.R.layout.simple_spinner_dropdown_item, vehiculos);
-
-            // Establecer el adaptador en el Spinner de matrículas
-            matricula.setAdapter(adapter);
-            matriculaDelete.setAdapter(adapter);
-
 
         }
     }

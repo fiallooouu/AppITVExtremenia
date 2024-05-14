@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         iniciarSesion = findViewById(R.id.buttonIniciarSesion);
         registrar = findViewById(R.id.buttonRegistrar);
 
-        correo.setText("jorgo@gmail.com");
+        correo.setText("javier@gmail.com");
         contraseña.setText("123");
 
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
