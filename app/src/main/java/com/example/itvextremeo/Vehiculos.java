@@ -72,27 +72,26 @@ public class Vehiculos extends AppCompatActivity {
                 MarcasVehiculo marcaSeleccionada = (MarcasVehiculo) marca.getSelectedItem();
                 int idSelecMarca = marcaSeleccionada.getId();
 
-                //Toast.makeText(Vehiculos.this, valorSeleccionado, Toast.LENGTH_LONG).show();
-                //Toast.makeText(Vehiculos.this, String.valueOf(valorSeleccionado), Toast.LENGTH_LONG).show();
-
                 String matri = matricula.getText().toString().toUpperCase().trim();
                 String marc = String.valueOf(idSelecMarca);
-                String model = modelo.getText().toString();
+                String model = Utils.toTitleCase(modelo.getText().toString());
                 String an = año.getText().toString().trim();
                 String itemSeleccionado = String.valueOf(valorSeleccionado);
 
 
                 if(!matri.isEmpty() && !marc.equals("0") && !model.isEmpty() && !an.isEmpty() && !itemSeleccionado.isEmpty()){
-                    new anadirVehiculo().execute(matri,marc,model,an,idActual,itemSeleccionado);
-                    matricula.setText("");
-                    marca.setSelection(0);
-                    modelo.setText("");
-                    año.setText("");
+                    if(Utils.validarMatricula(matri)) {
+                        if (Utils.isAnoValido(an)) {
+                            new anadirVehiculo().execute(matri, marc, model, an, idActual, itemSeleccionado);
+                        } else {
+                            Toast.makeText(Vehiculos.this, "Año es incorrecto el formato", Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(Vehiculos.this, "Matricula es incorrecto el formato", Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     Toast.makeText(Vehiculos.this, "Rellena todos los campos", Toast.LENGTH_LONG).show();
                 }
-
-
             }
         });
         eliminar.setOnClickListener(new View.OnClickListener() {
@@ -202,9 +201,16 @@ public class Vehiculos extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             Toast.makeText(Vehiculos.this, result, Toast.LENGTH_LONG).show();
+            if(!result.equals("Vehiculo ya existe")){
+                matricula.setText("");
+                marca.setSelection(0);
+                modelo.setText("");
+                año.setText("");
+            }
 
         }
     }
+
 
     private class borrarVehiculo extends AsyncTask<String, Void, String> {
 
@@ -265,7 +271,8 @@ public class Vehiculos extends AppCompatActivity {
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        KeyboardUtils.hideSoftKeyboard(this);
+        Utils.hideSoftKeyboard(this);
         return super.onTouchEvent(event);
     }
+
 }

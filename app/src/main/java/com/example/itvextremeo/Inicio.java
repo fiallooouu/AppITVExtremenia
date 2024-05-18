@@ -2,6 +2,7 @@ package com.example.itvextremeo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -34,6 +35,7 @@ public class Inicio extends AppCompatActivity {
 
     private Button inicio, car, cita, perfil;
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +177,7 @@ public class Inicio extends AppCompatActivity {
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        KeyboardUtils.hideSoftKeyboard(this);
+        Utils.hideSoftKeyboard(this);
         return super.onTouchEvent(event);
     }
 }

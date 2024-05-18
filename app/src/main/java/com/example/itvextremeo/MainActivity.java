@@ -1,5 +1,7 @@
 package com.example.itvextremeo;
 
+import static com.example.itvextremeo.Utils.hashPassword;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -33,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         iniciarSesion = findViewById(R.id.buttonIniciarSesion);
         registrar = findViewById(R.id.buttonRegistrar);
 
-        correo.setText("javier@gmail.com");
-        contraseña.setText("123");
+        //correo.setText("jorgollo04@gmail.com");
+        //contraseña.setText("Secujorllo04");
 
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,15 +60,16 @@ public class MainActivity extends AppCompatActivity {
         String correo1 = correo.getText().toString().trim();
         String contraseña1 = contraseña.getText().toString().trim();
 
-        if(!correo1.isEmpty() && !contraseña1.isEmpty()){
-            new AgregarUsuarioTask().execute(correo1,contraseña1);
-        }else{
+        if (!correo1.isEmpty() && !contraseña1.isEmpty()) {
+                String contraCifra = hashPassword(contraseña1);
+                new AgregarUsuarioTask().execute(correo1, contraCifra);
+        } else {
             Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
         }
     }
 
     //Pasamos los datos de los campos al PHP
-    private class AgregarUsuarioTask extends AsyncTask<String, Void, String>{
+    private class AgregarUsuarioTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -75,8 +78,9 @@ public class MainActivity extends AppCompatActivity {
             postDataParams.put("correo", params[0]);
             postDataParams.put("contrasena", params[1]);
 
-            return ConexiónPHP.enviarPost(Utils.IPEQUIPO+"/iniciarSesion.php", postDataParams);
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/iniciarSesion.php", postDataParams);
         }
+
         @Override
         protected void onPostExecute(String result) {
             //Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
@@ -86,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
             String ID = partes[0];
             String opc = partes[1];
 
-            if(opc.equals("true")){
+            if (opc.equals("true")) {
                 Intent intent = new Intent(MainActivity.this, Inicio.class);
                 intent.putExtra("idUsu", ID);
                 startActivity(intent);
                 finish();
-            } else if(opc.equals("false")) {
+            } else if (opc.equals("false")) {
                 Toast.makeText(MainActivity.this, "Credenciales erroneas", Toast.LENGTH_LONG).show();
             }
         }
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        KeyboardUtils.hideSoftKeyboard(this);
+        Utils.hideSoftKeyboard(this);
         return super.onTouchEvent(event);
     }
 }

@@ -2,7 +2,6 @@ package com.example.itvextremeo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import com.example.itvextremeo.modelo.InfoVehiculo;
 import com.example.itvextremeo.modelo.TipoInspeccion;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,27 +105,33 @@ public class Citas extends AppCompatActivity {
         btnPedirCita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!matricula.getSelectedItem().toString().isEmpty() && !fechatxt.getText().toString().isEmpty() && !horas.getSelectedItem().toString().isEmpty() && !tipoInspeccion.getSelectedItem().toString().isEmpty()) {
-                    InfoVehiculo vehiculoSeleccionado = (InfoVehiculo) matricula.getSelectedItem();
-                    idVehiculoSeleccionado = vehiculoSeleccionado.getMatricula();
+                //Comprobamos si el Spinner de matricula se ha cargado de la BBDD
+                if(!(matricula.getSelectedItemPosition() == -1)) {
+                    //Comprobamos si estan todos los campos rellenos
+                    if (!matricula.getSelectedItem().toString().isEmpty() && !fechatxt.getText().toString().isEmpty() && !horas.getSelectedItem().toString().isEmpty() && !tipoInspeccion.getSelectedItem().toString().isEmpty()) {
+                        InfoVehiculo vehiculoSeleccionado = (InfoVehiculo) matricula.getSelectedItem();
+                        idVehiculoSeleccionado = vehiculoSeleccionado.getMatricula();
 
-                    String fech = fechatxt.getText().toString().trim();
-                    String hor = horas.getSelectedItem().toString().trim();
-                    String idUs = idActual;
-                    String idVeh = idVehiculoSeleccionado;
-                    String tipoInsp = idIspeccion;
-                    String tipoVehi = idTipoVehiculo;
+                        String fech = fechatxt.getText().toString().trim();
+                        String hor = horas.getSelectedItem().toString().trim();
+                        String idUs = idActual;
+                        String idVeh = idVehiculoSeleccionado;
+                        String tipoInsp = idIspeccion;
+                        String tipoVehi = idTipoVehiculo;
 
-                    //Toast.makeText(Citas.this,fech+" "+hor+" "+idUs+" "+idVeh+" "+tipoInsp+" "+tipoVehi,Toast.LENGTH_LONG).show();
-                    new pedirCita().execute(fech, hor, idUs, idVeh, tipoInsp, tipoVehi);
+                        //Toast.makeText(Citas.this,fech+" "+hor+" "+idUs+" "+idVeh+" "+tipoInsp+" "+tipoVehi,Toast.LENGTH_LONG).show();
+                        new pedirCita().execute(fech, hor, idVeh, tipoInsp, tipoVehi);
 
-                    Intent intent = new Intent(Citas.this, Citas.class);
-                    intent.putExtra("idUsu", idActual);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
+                        Intent intent = new Intent(Citas.this, Citas.class);
+                        intent.putExtra("idUsu", idActual);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
 
-                } else {
-                    Toast.makeText(Citas.this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Citas.this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(Citas.this,"Necesitas selecionar una matricula, pero no tienes vehiculos",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -314,12 +320,7 @@ public class Citas extends AppCompatActivity {
 
             }else{
                 Toast.makeText(Citas.this,"No tiene vehiculos para pedir cita",Toast.LENGTH_SHORT).show();
-                
-                Intent intent = new Intent(Citas.this, Vehiculos.class);
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
+
             }
 
         }
@@ -432,10 +433,9 @@ public class Citas extends AppCompatActivity {
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("fecha", params[0]);
             postDataParams.put("hora", params[1]);
-            postDataParams.put("isUse", params[2]);
-            postDataParams.put("idVehi", params[3]);
-            postDataParams.put("tipoIns", params[4]);
-            postDataParams.put("tipoVehi", params[5]);
+            postDataParams.put("idVehi", params[2]);
+            postDataParams.put("tipoIns", params[3]);
+            postDataParams.put("tipoVehi", params[4]);
 
             return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/anadirCitas.php", postDataParams);
         }
@@ -476,30 +476,45 @@ public class Citas extends AppCompatActivity {
 
 
     private void fecha(int i) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
         DatePickerDialog dialog = new DatePickerDialog(Citas.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                switch (i) {
-                    case 1:
-                        fechatxtDelete.setText("");
-                        fechatxt.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
-                        break;
-                    case 0:
-                        fechatxt.setText("");
-                        fechatxtDelete.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
-                        break;
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, day);
+
+                int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
+                if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+                    switch (i) {
+                        case 1:
+                            fechatxtDelete.setText("");
+                            fechatxt.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
+                            break;
+                        case 0:
+                            fechatxt.setText("");
+                            fechatxtDelete.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
+                            break;
+                    }
+                } else {
+                    Toast.makeText(Citas.this, "No puedes seleccionar sábados o domingos.", Toast.LENGTH_LONG).show();
                 }
             }
-        },
-                2024, 0, 15);
+        }, year, month, day);
         dialog.show();
     }
+
+
+
 
 
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        KeyboardUtils.hideSoftKeyboard(this);
+        Utils.hideSoftKeyboard(this);
         return super.onTouchEvent(event);
     }
 

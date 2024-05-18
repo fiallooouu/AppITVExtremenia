@@ -1,5 +1,7 @@
 package com.example.itvextremeo;
 
+import static com.example.itvextremeo.Utils.hashPassword;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -61,12 +63,30 @@ public class Perfil extends AppCompatActivity {
             public void onClick(View v) {
 
                 String name = nombre.getText().toString().trim();
-                String apel = apellido.getText().toString().trim();
+                String apel = Utils.toTitleCase(apellido.getText().toString().trim());
                 String tele = telefono.getText().toString().trim();
                 String corr = correo.getText().toString().trim();
 
-                new modificarDatosPerfil().execute(idActual, name, apel, tele, corr);
-                new cargarPerfil().execute(idActual);
+                if(!name.isEmpty() && !apel.isEmpty() && !tele.isEmpty() && !corr.isEmpty()) {
+                    try {
+                        if(Utils.validarTelefono(tele)) {
+                            if(Utils.validarCorreo(corr)) {
+                                new modificarDatosPerfil().execute(idActual, name, apel, tele, corr);
+                                new cargarPerfil().execute(idActual);
+                            }else{
+                                Toast.makeText(Perfil.this, "Formato de correo incorrecto", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            Toast.makeText(Perfil.this, "Formato de telefono icorrecto", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (InstantiationException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else{
+                    Toast.makeText(Perfil.this, "Campos vacios", Toast.LENGTH_LONG).show();
+                }
             }
         });
         btnCambiarContraseña.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +95,14 @@ public class Perfil extends AppCompatActivity {
                 String contrase = contraseña.getText().toString().trim();
                 String repeContra = repetirContraseña.getText().toString().trim();
                 if(repeContra.equals(contrase)){
-                    new modificarContraseña().execute(idActual, contrase);
+                    if(Utils.validarPassword(contrase)) {
+                        String contraCifra = hashPassword(contrase);
+                        new modificarContraseña().execute(idActual, contraCifra);
+                        contraseña.setText("");
+                        repetirContraseña.setText("");
+                    }else{
+                        Toast.makeText(Perfil.this, "Formato de contraseñas erroneos", Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     Toast.makeText(Perfil.this, "Contraseñas no coinciden", Toast.LENGTH_LONG).show();
                 }
@@ -86,32 +113,34 @@ public class Perfil extends AppCompatActivity {
         modificarDatos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                nombre.setEnabled(isChecked);
-                apellido.setEnabled(isChecked);
-                telefono.setEnabled(isChecked);
-                correo.setEnabled(isChecked);
-                if(isChecked){
-                    actualizar.setVisibility(View.VISIBLE);
-                }else{
-                    actualizar.setVisibility(View.GONE);
-                }
+                    nombre.setEnabled(isChecked);
+                    apellido.setEnabled(isChecked);
+                    telefono.setEnabled(isChecked);
+                    correo.setEnabled(isChecked);
+                    if (isChecked) {
+                        cambiarContraseña.setChecked(false);
+                        actualizar.setVisibility(View.VISIBLE);
+                    } else {
+                        actualizar.setVisibility(View.GONE);
+                    }
             }
         });
 
         cambiarContraseña.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    contraseña.setVisibility(View.VISIBLE);
-                    repetirContraseña.setVisibility(View.VISIBLE);
-                    btnCambiarContraseña.setVisibility(View.VISIBLE);
-                } else {
-                    contraseña.setVisibility(View.GONE);
-                    contraseña.setText("");
-                    repetirContraseña.setVisibility(View.GONE);
-                    repetirContraseña.setText("");
-                    btnCambiarContraseña.setVisibility(View.GONE);
-                }
+                    if (isChecked) {
+                        modificarDatos.setChecked(false);
+                        contraseña.setVisibility(View.VISIBLE);
+                        repetirContraseña.setVisibility(View.VISIBLE);
+                        btnCambiarContraseña.setVisibility(View.VISIBLE);
+                    } else {
+                        contraseña.setVisibility(View.GONE);
+                        contraseña.setText("");
+                        repetirContraseña.setVisibility(View.GONE);
+                        repetirContraseña.setText("");
+                        btnCambiarContraseña.setVisibility(View.GONE);
+                    }
             }
         });
 
@@ -186,7 +215,6 @@ public class Perfil extends AppCompatActivity {
         protected void onPostExecute(String result) {
             Toast.makeText(Perfil.this, result, Toast.LENGTH_LONG).show();
 
-
         }
     }
     private class modificarDatosPerfil extends AsyncTask<String, Void, String> {
@@ -240,7 +268,7 @@ public class Perfil extends AppCompatActivity {
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        KeyboardUtils.hideSoftKeyboard(this);
+        Utils.hideSoftKeyboard(this);
         return super.onTouchEvent(event);
     }
 }

@@ -3,18 +3,22 @@ package com.example.itvextremeo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
 
 public class DetalleVehiculo extends AppCompatActivity {
 
 
     String idActual;
     TextView matricula, marca, modelo, año, tipoVehiculo, titular;
-    Button atras;
+    Button atras, eliminarVehiculo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class DetalleVehiculo extends AppCompatActivity {
 
         //Boton
         atras = findViewById(R.id.btnDetaAtras);
+        eliminarVehiculo = findViewById(R.id.btnDVEliminarVehi);
 
         matricula.setText(intent.getStringExtra("matricula"));
         marca.setText(intent.getStringExtra("marca"));
@@ -54,5 +59,40 @@ public class DetalleVehiculo extends AppCompatActivity {
             }
 
         });
+
+        eliminarVehiculo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String matriEli = matricula.getText().toString().trim();
+                    new borrarVehiculo().execute(idActual,matriEli);
+
+            }
+        });
+    }
+
+    private class borrarVehiculo extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            HashMap<String, String> postDataParams = new HashMap<>();
+            postDataParams.put("idUser", params[0]);
+            postDataParams.put("matricula", params[1]);
+
+
+            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/eliminarVehiculo.php",postDataParams);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(DetalleVehiculo.this, result, Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(DetalleVehiculo.this, Inicio.class);
+            intent.putExtra("idUsu", idActual);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
+
+        }
     }
 }

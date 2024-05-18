@@ -184,7 +184,8 @@
             android:layout_marginBottom="3dp"
             android:text="Matricula Eliminar"
             android:textColor="#FFFFFF"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/editTextText11"
@@ -196,7 +197,8 @@
             android:inputType="text"
             android:paddingStart="10dp"
             android:textColor="#000000"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/button4"
@@ -207,7 +209,8 @@
             android:text="Eliminar Vehiculo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
     </LinearLayout>
 
