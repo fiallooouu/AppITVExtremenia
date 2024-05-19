@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
         iniciarSesion = findViewById(R.id.buttonIniciarSesion);
         registrar = findViewById(R.id.buttonRegistrar);
 
-        //correo.setText("jorgollo04@gmail.com");
-        //contraseña.setText("Secujorllo04");
+        correo.setText("maniesolis13@gmail.com");
+        contraseña.setText("Secujorllo04");
 
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
