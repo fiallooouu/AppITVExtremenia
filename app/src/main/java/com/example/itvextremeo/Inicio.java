@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,15 +33,21 @@ public class Inicio extends AppCompatActivity {
 
     private ArrayList<Vehiculo> datosVehiculo;
     private ArrayList<Cita> datosCitas;
+    private ArrayList<String> fechasCitas;
     private String correoActual, idActual, nameActual, apeActual, teleActual;
 
     private ListView misCitas, misVehiculos;
 
     private Button inicio, car, cita, perfil;
+    private String activa;
+    private boolean salida;
+
+
 
     @SuppressLint("SuspiciousIndentation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
 
@@ -57,10 +64,14 @@ public class Inicio extends AppCompatActivity {
         misCitas = findViewById(R.id.listCitas);
         misVehiculos = findViewById(R.id.listVehiculos);
 
+        new comprovacionFechasCitas().execute();
 
-
-
-        new misCitas().execute(idActual);
+        while (true) {
+            new misCitas().execute(idActual);
+            if(!salida){
+                break;
+            }
+        }
         new misVehiculos().execute(idActual);
 
 
@@ -84,7 +95,6 @@ public class Inicio extends AppCompatActivity {
                 finish();
             }
         });
-
         misCitas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -104,6 +114,17 @@ public class Inicio extends AppCompatActivity {
             }
         });
 
+        inicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Inicio.this, Inicio.class);
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                salida = false;
+                finish();
+            }
+        });
 
         car.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +133,7 @@ public class Inicio extends AppCompatActivity {
                 intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+                salida = false;
                 finish();
             }
         });
@@ -123,6 +145,7 @@ public class Inicio extends AppCompatActivity {
                 intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+                salida = false;
                 finish();
             }
         });
@@ -134,6 +157,7 @@ public class Inicio extends AppCompatActivity {
                 intent.putExtra("idUsu", idActual);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+                salida = false;
                 finish();
             }
         });
@@ -152,11 +176,10 @@ public class Inicio extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if(!result.equals("false")) {
+            if (!result.equals("false")) {
                 String[] datosSpinner = result.split("_");
                 datosCitas = new ArrayList<>();
 
-                // Convertir los datos obtenidos en objetos TipoInspeccion y agregarlos a la lista
                 for (int i = 0; i < datosSpinner.length; i += 8) {
                     String codigoCita = datosSpinner[i];
                     String matricula = datosSpinner[i + 1];
@@ -165,15 +188,14 @@ public class Inicio extends AppCompatActivity {
                     String tipoInspeccion = datosSpinner[i + 4];
                     String tipoVehi = datosSpinner[i + 5];
                     String descripccion = datosSpinner[i + 6];
-                    String activa = datosSpinner[i + 7];
+                    activa = datosSpinner[i + 7];
 
                     datosCitas.add(new Cita(codigoCita, matricula, fecha, hora, tipoInspeccion, tipoVehi, descripccion, activa));
                 }
-                // Crear un adaptador con los objetos TipoInspeccion
+
                 ArrayAdapter<Cita> adapter = new ArrayAdapter<Cita>(Inicio.this, android.R.layout.simple_list_item_1, datosCitas) {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
-                        // Obtener el vehículo en la posición actual
                         Cita cita = datosCitas.get(position);
 
                         // Crear una vista para mostrar el vehículo
@@ -184,7 +206,7 @@ public class Inicio extends AppCompatActivity {
                         TextView textView = view.findViewById(android.R.id.text1);
 
                         // Establecer el texto en el TextView
-                        textView.setText((position + 1) + "- " + cita.getMatricula() + " · " + cita.getFecha() + " · " + cita.getHora());
+                        textView.setText((position + 1) + "- " + cita.getMatricula() + " · " + cita.getFecha() + " " + cita.getHora());
 
                         textView.setTextColor(Color.WHITE);
                         textView.setTextSize(14);
@@ -195,11 +217,11 @@ public class Inicio extends AppCompatActivity {
                 };
 
                 misCitas.setAdapter(adapter);
-            }else{
-                Toast.makeText(Inicio.this,"No tiene citas en su perfil",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Inicio.this, "No tiene citas en su perfil", Toast.LENGTH_SHORT).show();
             }
-
         }
+
     }
 
     private class misVehiculos extends AsyncTask<String, Void, String> {
@@ -261,6 +283,39 @@ public class Inicio extends AppCompatActivity {
 
         }
     }
+    private class comprovacionFechasCitas extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/extraerDatosBorradoCitas.php");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+                String[] datosSpinner = result.split(",");
+                fechasCitas = new ArrayList<>();
+
+                for (int i = 0; i < datosSpinner.length;i++){
+                    new borrarCita().execute(datosSpinner[i]);
+                }
+
+        }
+
+        private class borrarCita extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                HashMap<String, String> postDataParams = new HashMap<>();
+                postDataParams.put("id", params[0]);
+
+                return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/borrarCitaCaducada.php", postDataParams);
+            }
+        }
+    }
+
+
     //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {

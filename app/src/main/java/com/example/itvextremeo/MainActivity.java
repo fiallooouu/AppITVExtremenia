@@ -83,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
-            //String[] partes = result.split(",");
             String[] partes = result.trim().split(",");
             // Asignar cada parte a las variables correspondientes
             String ID = partes[0];

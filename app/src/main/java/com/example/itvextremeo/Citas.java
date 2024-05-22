@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.itvextremeo.modelo.InfoVehiculo;
 import com.example.itvextremeo.modelo.TipoInspeccion;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -27,12 +28,10 @@ import java.util.List;
 
 public class Citas extends AppCompatActivity {
     private String idActual, idTipoVehiculo, idIspeccion, idVehiculoSeleccionado;
-    private Switch switchCita;
-    private Spinner matricula, tipoInspeccion, horas, matriculaDelete, horaDelete;
-    private TextView fechatxt, fechatxtDelete, tipoVehiculo, precio, cabecera;
-    private Button inicio, car, cita, perfil, btnfecha, btnfechaDelete, horaAct, btnPedirCita, btnHoraDelete, btnBorrarCita;
+    private Spinner matricula, tipoInspeccion, horas;
+    private TextView fechatxt, tipoVehiculo, precio;
+    private Button inicio, car, cita, perfil, btnfecha, horaAct, btnPedirCita;
     private ArrayList<String> horasDisponibles;
-    private View  prinLayout, deleLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +41,10 @@ public class Citas extends AppCompatActivity {
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
-        //Layout
-        prinLayout = findViewById(R.id.layoutPrincipal);
-        deleLayout = findViewById(R.id.layoutBorrado);
-
-        //Switch
-        switchCita = findViewById(R.id.switchCitas);
-
         //Spinner
         matricula = findViewById(R.id.spinner3Matricula);
         tipoInspeccion = findViewById(R.id.spinner2TipoInspec);
         horas = findViewById(R.id.spinnerHora);
-        matriculaDelete = findViewById(R.id.spinnerMatriculaDelete);
-        horaDelete = findViewById(R.id.spinnerHoraDelete);
 
 
         //Botones
@@ -64,43 +54,16 @@ public class Citas extends AppCompatActivity {
         perfil = findViewById(R.id.buttonPefil3);
 
         btnfecha = findViewById(R.id.button5Fecha);
-        btnfechaDelete = findViewById(R.id.btnFechaDelete);
         horaAct = findViewById(R.id.button2Horas);
         btnPedirCita = findViewById(R.id.buttonPedirCita);
-        btnHoraDelete = findViewById(R.id.btnHoraDelete);
-        btnBorrarCita = findViewById(R.id.btnBorrarCita);
-
 
         //TextView
         fechatxt = findViewById(R.id.editFechatxt);
-        fechatxtDelete = findViewById(R.id.editFechatxt2);
         tipoVehiculo = findViewById(R.id.txtViewTipoVehiculo);
         precio = findViewById(R.id.editTextText5);
-        cabecera = findViewById(R.id.textView124);
-
 
         new infoVehiculo().execute(idActual);
         new tipoInspeccion().execute();
-
-        switchCita.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    deleLayout.setVisibility(View.VISIBLE);
-                    prinLayout.setVisibility(View.GONE);
-                    cabecera.setText("Borrar Cita");
-
-                } else {
-                    deleLayout.setVisibility(View.GONE);
-                    prinLayout.setVisibility(View.VISIBLE);
-                    cabecera.setText("Pedir Cita");
-                    Intent intent = new Intent(Citas.this, Citas.class);
-                    intent.putExtra("idUsu", idActual);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
-            }
-        });
 
         btnPedirCita.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,28 +98,6 @@ public class Citas extends AppCompatActivity {
                 }
             }
         });
-        btnBorrarCita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InfoVehiculo infoVehiculo = (InfoVehiculo) matriculaDelete.getSelectedItem();
-                String matriSelec = infoVehiculo.getMatricula();
-                //int hola = horaDelete.getSelectedItemPosition();
-
-                if(!matriSelec.isEmpty() && !fechatxtDelete.getText().toString().isEmpty() && horaDelete.getSelectedItemPosition() != -1){
-                    InfoVehiculo vehiculoSeleccionado = (InfoVehiculo) matriculaDelete.getSelectedItem();
-                    idVehiculoSeleccionado = vehiculoSeleccionado.getMatricula();
-
-                    String fech = fechatxtDelete.getText().toString().trim();
-                    String hor = horaDelete.getSelectedItem().toString().trim();
-                    String idVeh = idVehiculoSeleccionado;
-
-                    new borrarCita().execute(idVeh,fech,hor);
-
-                }else{
-                    Toast.makeText(Citas.this,"Completa todos los campos", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
         horaAct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,12 +108,6 @@ public class Citas extends AppCompatActivity {
                     Toast.makeText(Citas.this, "Introduce antes una fecha", Toast.LENGTH_LONG).show();
                 }
 
-            }
-        });
-        btnHoraDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    cargarTodasHoras();
             }
         });
 
@@ -220,13 +155,6 @@ public class Citas extends AppCompatActivity {
             }
 
         });
-        btnfechaDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int i = 0;
-                fecha(i);
-            }
-        });
 
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,18 +201,6 @@ public class Citas extends AppCompatActivity {
         });
     }
 
-    private void cargarTodasHoras() {
-        String[] horasArray = {"09:00:00", "09:15:00", "09:30:00", "09:45:00", "10:00:00", "10:15:00", "10:30:00", "10:45:00",
-                "11:00:00", "11:15:00", "11:30:00", "11:45:00", "12:00:00", "12:15:00", "12:30:00", "12:45:00",
-                "13:00:00", "13:15:00", "13:30:00", "13:45:00", "14:00:00", "14:15:00", "14:30:00", "14:45:00",
-                "16:00:00", "16:15:00", "16:30:00", "16:45:00", "17:00:00", "17:15:00", "17:30:00", "17:45:00",
-                "18:00:00", "18:15:00", "18:30:00", "18:45:00", "19:00:00", "19:15:00", "19:30:00", "19:45:00", "20:00:00"};
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(Citas.this, android.R.layout.simple_spinner_item, horasArray);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        horaDelete.setAdapter(adapter);
-    }
 
     //Extraemos la matricula y el tipo de vehiculo
     private class infoVehiculo extends AsyncTask<String, Void, String> {
@@ -316,7 +232,6 @@ public class Citas extends AppCompatActivity {
 
                 // Establecer el adaptador en el Spinner de matrículas
                 matricula.setAdapter(adapter);
-                matriculaDelete.setAdapter(adapter);
 
             }else{
                 Toast.makeText(Citas.this,"No tiene vehiculos para pedir cita",Toast.LENGTH_SHORT).show();
@@ -396,6 +311,7 @@ public class Citas extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            String fechaSeleccionada = fechatxt.getText().toString().trim();
             String[] horasArray = {"09:00:00", "09:15:00", "09:30:00", "09:45:00", "10:00:00", "10:15:00", "10:30:00", "10:45:00",
                     "11:00:00", "11:15:00", "11:30:00", "11:45:00", "12:00:00", "12:15:00", "12:30:00", "12:45:00",
                     "13:00:00", "13:15:00", "13:30:00", "13:45:00", "14:00:00", "14:15:00", "14:30:00", "14:45:00",
@@ -404,24 +320,53 @@ public class Citas extends AppCompatActivity {
             String[] datosSpinner = result.split(",");
             horasDisponibles = new ArrayList<>();
 
-            for (String hora : horasArray) {
-                boolean encontrada = false;
-                for (String dato : datosSpinner) {
-                    if (hora.equals(dato)) {
-                        encontrada = true;
-                        break;
+            // Obtener la fecha y hora actuales
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            String currentDate = dateFormat.format(calendar.getTime());
+            String currentTime = timeFormat.format(calendar.getTime());
+
+            // Comprobar si la fecha seleccionada es igual a la fecha actual
+            if (fechaSeleccionada.equals(currentDate)) {
+                for (String hora : horasArray) {
+                    // Solo considerar las horas posteriores a la hora actual
+                    if (hora.compareTo(currentTime) > 0) {
+                        boolean encontrada = false;
+                        for (String dato : datosSpinner) {
+                            if (hora.equals(dato)) {
+                                encontrada = true;
+                                break;
+                            }
+                        }
+                        if (!encontrada) {
+                            horasDisponibles.add(hora);
+                        }
                     }
                 }
-                if (!encontrada) {
-                    horasDisponibles.add(hora);
+            } else {
+                //Comprobar que la hora no esta cogida en esa fecha seleccionada
+                for (String hora : horasArray) {
+                    boolean encontrada = false;
+                    for (String dato : datosSpinner) {
+                        if (hora.equals(dato)) {
+                            encontrada = true;
+                            break;
+                        }
+                    }
+                    if (!encontrada) {
+                        horasDisponibles.add(hora);
+                    }
                 }
             }
+
             ArrayAdapter<String> adapter = new ArrayAdapter<>(Citas.this, android.R.layout.simple_spinner_item, horasDisponibles);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             horas.setAdapter(adapter);
 
             // Ahora el ArrayList horasDisponibles contiene las horas que no están en datosSpinner
         }
+
 
     }
 
@@ -445,34 +390,6 @@ public class Citas extends AppCompatActivity {
             Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
         }
     }
-    private class borrarCita extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            HashMap<String, String> postDataParams = new HashMap<>();
-            postDataParams.put("matricu", params[0]);
-            postDataParams.put("fecha", params[1]);
-            postDataParams.put("hora", params[2]);
-
-            return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/borrarCita.php", postDataParams);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            if(result.equals("No se encontro la cita con esos datos")){
-                Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
-
-            }else{
-                Toast.makeText(Citas.this, result, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Citas.this, Citas.class);
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-
-            }
-        }
-    }
 
 
     private void fecha(int i) {
@@ -491,12 +408,10 @@ public class Citas extends AppCompatActivity {
                 if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
                     switch (i) {
                         case 1:
-                            fechatxtDelete.setText("");
                             fechatxt.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
                             break;
                         case 0:
                             fechatxt.setText("");
-                            fechatxtDelete.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
                             break;
                     }
                 } else {
@@ -506,7 +421,6 @@ public class Citas extends AppCompatActivity {
         }, year, month, day);
         dialog.show();
     }
-
 
 
 

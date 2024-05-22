@@ -47,10 +47,6 @@ public class Registrar extends AppCompatActivity {
         registrase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(Registrar.this, MainActivity.class);
-                //startActivity(intent);
-
-
                 String name = Utils.toTitleCase(nombre.getText().toString());
                 String ape = Utils.toTitleCase(apellido.getText().toString());
                 String tele = telefono.getText().toString().trim();
@@ -60,6 +56,7 @@ public class Registrar extends AppCompatActivity {
                 String fechaActual = obtenerFechaActual();
 
 
+                //Comprobacion de campos y validaciones
                 if (!name.isEmpty() && !ape.isEmpty() && !tele.isEmpty() && !corre.isEmpty() && !contra.isEmpty() && !recontra.isEmpty()) {
                     try {
                         if (Utils.validarTelefono(tele)) {
@@ -100,6 +97,7 @@ public class Registrar extends AppCompatActivity {
         });
     }
 
+    //Inserccion de datos del usuario en la BBDD
     private class AgregarUsuarioTask extends AsyncTask<String, Void, String> {
 
         @Override

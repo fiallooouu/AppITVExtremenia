@@ -126,11 +126,21 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
         app:layout_constraintVertical_bias="0.331">
 
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="3dp"
+            android:text="Nombre"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/editTextPerfilNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/redondeotexto"
             android:ems="10"
@@ -139,6 +149,16 @@
             android:inputType="text"
             android:paddingStart="10dp"
             android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="Apellidos"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
@@ -155,6 +175,16 @@
             android:textColor="#000000"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="Telefono"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/editTextPerfilTelef"
             android:layout_width="match_parent"
@@ -167,6 +197,16 @@
             android:inputType="text"
             android:paddingStart="10dp"
             android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:text="Correo"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <EditText
