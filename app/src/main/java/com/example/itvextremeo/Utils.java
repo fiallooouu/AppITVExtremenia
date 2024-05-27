@@ -11,7 +11,7 @@ import java.util.Calendar;
 public class Utils {
 
     //Variable para el acceso a la BBDD
-    public static final String IPEQUIPO = "http://192.168.1.170/itvExtremenaPHP";
+    public static final String IPEQUIPO = "http://192.168.1.178/itvExtremenaPHP";
 
     //Comprobaciones de campos
     public static final String TELEFONOREGEX = "\\d{9}";

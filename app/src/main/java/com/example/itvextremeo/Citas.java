@@ -3,6 +3,7 @@ package com.example.itvextremeo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -84,6 +85,19 @@ public class Citas extends AppCompatActivity {
 
                         //Toast.makeText(Citas.this,fech+" "+hor+" "+idUs+" "+idVeh+" "+tipoInsp+" "+tipoVehi,Toast.LENGTH_LONG).show();
                         new pedirCita().execute(fech, hor, idVeh, tipoInsp, tipoVehi);
+                        new Thread(new Runnable() {
+                            public void run() {
+                                // Reemplaza con tu correo y contraseña de Gmail
+                                String username = "jorgollo04@gmail.com";
+                                String password = "recujorllo04";
+                                String to = "jorgollo04@gmail.com";
+                                String subject = "Asunto del correo";
+                                String message = "Cuerpo del correo";
+
+                                MailSender.sendMail(username, password, to, subject, message);
+                            }
+                        }).start();
+
 
                         Intent intent = new Intent(Citas.this, Citas.class);
                         intent.putExtra("idUsu", idActual);
@@ -381,7 +395,6 @@ public class Citas extends AppCompatActivity {
             postDataParams.put("idVehi", params[2]);
             postDataParams.put("tipoIns", params[3]);
             postDataParams.put("tipoVehi", params[4]);
-
             return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/anadirCitas.php", postDataParams);
         }
 

@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "itvpruebadev";
+$dbname = "itvpruebadev2";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -16,11 +16,9 @@ $año = $_POST['ano'];
 $correo = $_POST['idUser'];
 $tipoVehiculo = $_POST['idTipoVehi'];
 
-//$user = "Jorge";
-//$password = "9827364";
+//$sql = "SELECT * FROM vehiculo v WHERE v.Usuario_id = '$correo' AND v.Matricula LIKE '$matricula';";
+$sql = "SELECT * FROM vehiculo v WHERE v.Matricula LIKE '$matricula';";
 
-//$sql = "SELECT * FROM datos_usuario WHERE Correo = '$correo'";
-$sql = "SELECT * FROM vehiculo v WHERE v.Usuario_id = '$correo' AND v.Matricula LIKE '$matricula';";
 
 //SELECT * FROM datos_usuario du INNER JOIN vehiculo v ON du.id LIKE v.Usuario_id WHERE du.Correo LIKE "admin" AND v.Matricula LIKE "ABC123";
 $result = $conn->query($sql);

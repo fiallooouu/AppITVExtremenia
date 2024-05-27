@@ -3,18 +3,15 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "itvpruebadev";
+$dbname = "itvpruebadev2";
 
-// Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 $fecha = $_POST['fecha'];
 $hora = $_POST['hora'];
-$idUser = $_POST['isUse'];
 $idVehi = $_POST['idVehi'];
 $tipoInspec = $_POST['tipoIns'];
 $tipoVehi = $_POST['tipoVehi'];
-//$hora = "2024-04-30";
 
 $sql = "SELECT * FROM cita WHERE Fecha = '$fecha' AND Hora = '$hora'";
 $result = $conn->query($sql);
@@ -25,9 +22,13 @@ if ($result->num_rows > 0) {
 } else {
 
     // Inserta la Cita
-    $sql = "INSERT INTO cita (Fecha, Hora, id_Usuario, id_Vehiculo, Tipo_Inspeccion_id, Tipo_Vehiculo_id) VALUES ('$fecha', '$hora','$idUser', '$idVehi','$tipoInspec', '$tipoVehi')";
+    $sql = "INSERT INTO cita (Fecha, Hora, id_Vehiculo, Tipo_Inspeccion_id, Tipo_Vehiculo_id) VALUES ('$fecha', '$hora', '$idVehi', '$tipoInspec', '$tipoVehi')";
+
+    $sql2 = "INSERT INTO historial_inspecciones (Fecha, Hora, id_Vehiculo, Tipo_Inspeccion_id, Tipo_Vehiculo_id) VALUES ('$fecha', '$hora', '$idVehi', '$tipoInspec', '$tipoVehi')";
+
 
     if ($conn->query($sql) === TRUE) {
+        $conn->query($sql2);
         echo "Datos insertados correctamente";
     } else {
         echo "Error al insertar datos: " . $conn->error;
