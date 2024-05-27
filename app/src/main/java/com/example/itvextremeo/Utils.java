@@ -20,12 +20,15 @@ public class Utils {
     public static final String MATRICULAREGEX = "(?i)^(\\d{4}?[ -]*[A-Z]{3}|[A-Z]{1,2}[ -]*\\d{4}?[ -]*[A-Z]{1,2})$";
 
 
+    //Metodo valizacion de telefono
     public static boolean validarTelefono(String telefono) throws IllegalAccessException, InstantiationException {
         if (!telefono.matches(TELEFONOREGEX)) {
             return false;
         }
         return true;
     }
+
+    //Metodo valizacion de correo
     public static boolean validarCorreo(String correo) {
         if (!correo.matches(CORREOREGEX)) {
             return false;
@@ -33,12 +36,15 @@ public class Utils {
         return true;
     }
 
+    //Metodo valizacion de contraseña
     public static boolean validarPassword(String pass) {
         if (!pass.matches(PASSWORDREGEX)) {
             return false;
         }
         return true;
     }
+
+    //Metodo valizacion de matricula
     public static boolean validarMatricula(String matricula) {
         if (!matricula.matches(MATRICULAREGEX)) {
             return false;
@@ -52,6 +58,8 @@ public class Utils {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.YEAR);
     }
+
+    //Metodo que comprueba si el año es válido
     public static boolean isAnoValido(String anoString) {
         try {
             int ano = Integer.parseInt(anoString);

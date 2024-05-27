@@ -30,33 +30,69 @@ public class Perfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        //ID del usuario que a Iniciado Sesion
+        //Obtener ID de usuario actual
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
         //Cargar datos de Usuario
         new cargarPerfil().execute(idActual);
 
+        initComponent();
+        menuInferior();
+        escuchadoresBTN();
+        escuchadoresSwitch();
+        escuchadorCerrarSesion();
 
-        //Botones
-        inicio = findViewById(R.id.buttonInicio4);
-        car = findViewById(R.id.buttonCar4);
-        cita = findViewById(R.id.buttonCitas4);
-        perfil = findViewById(R.id.buttonPefil4);
-        btnCambiarContraseña = findViewById(R.id.buttonCambiarContraseña);
-        actualizar = findViewById(R.id.button5Actualizar);
-        cerrarSesion = findViewById(R.id.btnCerrarSesion);
+    }
+
+    private void escuchadorCerrarSesion() {
+        cerrarSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Perfil.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+    private void escuchadoresSwitch() {
         //Switch
-        modificarDatos = findViewById(R.id.switchModDatos);
-        cambiarContraseña = findViewById(R.id.switchModContra);
-        //EditText
-        nombre = findViewById(R.id.editTextPerfilNombre);
-        apellido = findViewById(R.id.editTextPerfilApe);
-        telefono = findViewById(R.id.editTextPerfilTelef);
-        correo = findViewById(R.id.editTextPerfilCorreo);
-        contraseña = findViewById(R.id.editTextTextNuevaPassword);
-        repetirContraseña = findViewById(R.id.editTextTextRepetirNuevaPassword4);
+        modificarDatos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                nombre.setEnabled(isChecked);
+                apellido.setEnabled(isChecked);
+                telefono.setEnabled(isChecked);
+                correo.setEnabled(isChecked);
+                if (isChecked) {
+                    cambiarContraseña.setChecked(false);
+                    actualizar.setVisibility(View.VISIBLE);
+                } else {
+                    actualizar.setVisibility(View.GONE);
+                }
+            }
+        });
 
+        //Switch
+        cambiarContraseña.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    modificarDatos.setChecked(false);
+                    contraseña.setVisibility(View.VISIBLE);
+                    repetirContraseña.setVisibility(View.VISIBLE);
+                    btnCambiarContraseña.setVisibility(View.VISIBLE);
+                } else {
+                    contraseña.setVisibility(View.GONE);
+                    contraseña.setText("");
+                    repetirContraseña.setVisibility(View.GONE);
+                    repetirContraseña.setText("");
+                    btnCambiarContraseña.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+    private void escuchadoresBTN() {
         //Botones de actualizacion
         actualizar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,42 +144,8 @@ public class Perfil extends AppCompatActivity {
                 }
             }
         });
-
-        //Switch
-        modificarDatos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    nombre.setEnabled(isChecked);
-                    apellido.setEnabled(isChecked);
-                    telefono.setEnabled(isChecked);
-                    correo.setEnabled(isChecked);
-                    if (isChecked) {
-                        cambiarContraseña.setChecked(false);
-                        actualizar.setVisibility(View.VISIBLE);
-                    } else {
-                        actualizar.setVisibility(View.GONE);
-                    }
-            }
-        });
-
-        cambiarContraseña.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        modificarDatos.setChecked(false);
-                        contraseña.setVisibility(View.VISIBLE);
-                        repetirContraseña.setVisibility(View.VISIBLE);
-                        btnCambiarContraseña.setVisibility(View.VISIBLE);
-                    } else {
-                        contraseña.setVisibility(View.GONE);
-                        contraseña.setText("");
-                        repetirContraseña.setVisibility(View.GONE);
-                        repetirContraseña.setText("");
-                        btnCambiarContraseña.setVisibility(View.GONE);
-                    }
-            }
-        });
-
+    }
+    private void menuInferior() {
         //Botones de navegacion
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,19 +190,27 @@ public class Perfil extends AppCompatActivity {
                 finish();
             }
         });
-
-        cerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Perfil.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
-
-
-
+    private void initComponent() {
+        //Botones
+        inicio = findViewById(R.id.buttonInicio4);
+        car = findViewById(R.id.buttonCar4);
+        cita = findViewById(R.id.buttonCitas4);
+        perfil = findViewById(R.id.buttonPefil4);
+        btnCambiarContraseña = findViewById(R.id.buttonCambiarContraseña);
+        actualizar = findViewById(R.id.button5Actualizar);
+        cerrarSesion = findViewById(R.id.btnCerrarSesion);
+        //Switch
+        modificarDatos = findViewById(R.id.switchModDatos);
+        cambiarContraseña = findViewById(R.id.switchModContra);
+        //EditText
+        nombre = findViewById(R.id.editTextPerfilNombre);
+        apellido = findViewById(R.id.editTextPerfilApe);
+        telefono = findViewById(R.id.editTextPerfilTelef);
+        correo = findViewById(R.id.editTextPerfilCorreo);
+        contraseña = findViewById(R.id.editTextTextNuevaPassword);
+        repetirContraseña = findViewById(R.id.editTextTextRepetirNuevaPassword4);
+    }
     private class modificarContraseña extends AsyncTask<String, Void, String> {
 
         @Override

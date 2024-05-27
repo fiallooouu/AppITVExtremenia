@@ -15,34 +15,25 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.itvextremeo.modelo.Cita;
-import com.example.itvextremeo.modelo.DetalleCita;
-import com.example.itvextremeo.modelo.TipoInspeccion;
 import com.example.itvextremeo.modelo.Vehiculo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Inicio extends AppCompatActivity {
 
     private ArrayList<Vehiculo> datosVehiculo;
     private ArrayList<Cita> datosCitas;
     private ArrayList<String> fechasCitas;
-    private String correoActual, idActual, nameActual, apeActual, teleActual;
-
+    private String idActual, activa;
     private ListView misCitas, misVehiculos;
-
     private Button inicio, car, cita, perfil;
-    private String activa;
     private boolean salida;
-
-
 
     @SuppressLint("SuspiciousIndentation")
     @Override
@@ -51,69 +42,33 @@ public class Inicio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
 
+        //Obtener ID de usuario actual
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
-        //Botones
-        inicio = findViewById(R.id.buttonInicio);
-        car = findViewById(R.id.buttonCar);
-        cita = findViewById(R.id.buttonCitas);
-        perfil = findViewById(R.id.buttonPefil);
+        //Inicializar componentes
+        initComponent();
+        //Escuchadores de las listas
+        listenListas();
+        //Menu botones inferior
+        menuInferior();
 
-        //Listas
-        misCitas = findViewById(R.id.listCitas);
-        misVehiculos = findViewById(R.id.listVehiculos);
-
-        new comprovacionFechasCitas().execute();
-
+        //Actualizar las citas del usuario
         while (true) {
             new misCitas().execute(idActual);
             if(!salida){
                 break;
             }
         }
+        //Cargamos los vehiculos en la lista
         new misVehiculos().execute(idActual);
 
+        //Comprobar la fecha de la cita si es inferior a la actual eliminiarla
+        new comprovacionFechasCitas().execute();
 
-        misVehiculos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Obtener el vehículo seleccionado
-                Vehiculo vehiculoSeleccionado = datosVehiculo.get(position);
-                // Crear un Intent para abrir la actividad DetalleVehiculoActivity
-                Intent intent = new Intent(Inicio.this, DetalleVehiculo.class);
-                // Pasar la información del vehículo seleccionado a la actividad DetalleVehiculoActivity
-                intent.putExtra("matricula", vehiculoSeleccionado.getMatricula());
-                intent.putExtra("marca", vehiculoSeleccionado.getMarca());
-                intent.putExtra("modelo", vehiculoSeleccionado.getModelo());
-                intent.putExtra("ano", vehiculoSeleccionado.getAño());
-                intent.putExtra("tipoVehi", vehiculoSeleccionado.getTipoVehiculo());
-                intent.putExtra("titular", vehiculoSeleccionado.getUsuario());
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-            }
-        });
-        misCitas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cita citaSeleccionada = datosCitas.get(position);
-                Intent intent = new Intent(Inicio.this, DetalleCita.class);
-                intent.putExtra("codigo", citaSeleccionada.getCodigo());
-                intent.putExtra("matricula", citaSeleccionada.getMatricula());
-                intent.putExtra("fecha", citaSeleccionada.getFecha());
-                intent.putExtra("hora", citaSeleccionada.getHora());
-                intent.putExtra("tipoInspe", citaSeleccionada.getTipoInspec());
-                intent.putExtra("tipoVehi", citaSeleccionada.getTipoVehiculo());
-                intent.putExtra("descrip", citaSeleccionada.getDescripccion());
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-            }
-        });
+    }
 
+    private void menuInferior() {
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +116,58 @@ public class Inicio extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void listenListas() {
+        misVehiculos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Obtener el vehículo seleccionado
+                Vehiculo vehiculoSeleccionado = datosVehiculo.get(position);
+                // Crear un Intent para abrir la actividad DetalleVehiculoActivity
+                Intent intent = new Intent(Inicio.this, DetalleVehiculo.class);
+                // Pasar la información del vehículo seleccionado a la actividad DetalleVehiculoActivity
+                intent.putExtra("matricula", vehiculoSeleccionado.getMatricula());
+                intent.putExtra("marca", vehiculoSeleccionado.getMarca());
+                intent.putExtra("modelo", vehiculoSeleccionado.getModelo());
+                intent.putExtra("ano", vehiculoSeleccionado.getAño());
+                intent.putExtra("tipoVehi", vehiculoSeleccionado.getTipoVehiculo());
+                intent.putExtra("titular", vehiculoSeleccionado.getUsuario());
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            }
+        });
+        misCitas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cita citaSeleccionada = datosCitas.get(position);
+                Intent intent = new Intent(Inicio.this, DetalleCita.class);
+                intent.putExtra("codigo", citaSeleccionada.getCodigo());
+                intent.putExtra("matricula", citaSeleccionada.getMatricula());
+                intent.putExtra("fecha", citaSeleccionada.getFecha());
+                intent.putExtra("hora", citaSeleccionada.getHora());
+                intent.putExtra("tipoInspe", citaSeleccionada.getTipoInspec());
+                intent.putExtra("tipoVehi", citaSeleccionada.getTipoVehiculo());
+                intent.putExtra("descrip", citaSeleccionada.getDescripccion());
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            }
+        });
+    }
+
+    private void initComponent() {
+        //Botones
+        inicio = findViewById(R.id.buttonInicio);
+        car = findViewById(R.id.buttonCar);
+        cita = findViewById(R.id.buttonCitas);
+        perfil = findViewById(R.id.buttonPefil);
+        //Listas
+        misCitas = findViewById(R.id.listCitas);
+        misVehiculos = findViewById(R.id.listVehiculos);
     }
 
     private class misCitas extends AsyncTask<String, Void, String> {
@@ -223,7 +230,6 @@ public class Inicio extends AppCompatActivity {
         }
 
     }
-
     private class misVehiculos extends AsyncTask<String, Void, String> {
 
         @Override

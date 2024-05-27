@@ -1,4 +1,4 @@
-package com.example.itvextremeo.modelo;
+package com.example.itvextremeo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,12 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.itvextremeo.Citas;
-import com.example.itvextremeo.ConexiónPHP;
-import com.example.itvextremeo.Inicio;
-import com.example.itvextremeo.R;
-import com.example.itvextremeo.Utils;
 
 import java.util.HashMap;
 
@@ -32,6 +26,35 @@ public class DetalleCita extends AppCompatActivity {
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
+        //Inicializar componentes
+        inirComponent(intent);
+        //Escuchadores de botones
+        escuchadores();
+    }
+
+    private void escuchadores() {
+        //Boton para volver a Inicio
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleCita.this, Inicio.class);
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            }
+        });
+
+        //Boton eliminar Cita
+        eliminarCita.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new borrarCita().execute(codigo.getText().toString());
+            }
+        });
+    }
+
+    private void inirComponent(Intent intent) {
         //EditText
         codigo = findViewById(R.id.txtDetaCitaCodigo);
         matricula = findViewById(R.id.txtDetaCitaMatri);
@@ -53,28 +76,9 @@ public class DetalleCita extends AppCompatActivity {
         tipoInspe.setText(intent.getStringExtra("tipoInspe"));
         tipoVehi.setText(intent.getStringExtra("tipoVehi"));
         descrip.setText(intent.getStringExtra("descrip"));
-
-
-        atras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetalleCita.this, Inicio.class);
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-            }
-        });
-
-        eliminarCita.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new borrarCita().execute(codigo.getText().toString());
-            }
-        });
-
-
     }
+
+    //Clase que elimina la cita
     private class borrarCita extends AsyncTask<String, Void, String> {
 
         @Override
@@ -82,10 +86,6 @@ public class DetalleCita extends AppCompatActivity {
 
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("id", params[0]);
-            postDataParams.put("matricula", params[0]);
-            postDataParams.put("id", params[0]);
-            postDataParams.put("id", params[0]);
-
 
             return ConexiónPHP.enviarPost(Utils.IPEQUIPO + "/borrarCita.php", postDataParams);
         }

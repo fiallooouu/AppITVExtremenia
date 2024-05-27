@@ -39,33 +39,28 @@ public class Citas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_citas);
 
+        //Obtener ID de usuario actual
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
-        //Spinner
-        matricula = findViewById(R.id.spinner3Matricula);
-        tipoInspeccion = findViewById(R.id.spinner2TipoInspec);
-        horas = findViewById(R.id.spinnerHora);
+        //Inicializamos los componentes
+        initComponent();
 
+        //Menu botones inferior
+        menuInferior();
 
-        //Botones
-        inicio = findViewById(R.id.buttonInicio3);
-        car = findViewById(R.id.buttonCar3);
-        cita = findViewById(R.id.buttonCitas3);
-        perfil = findViewById(R.id.buttonPefil3);
+        //Escuchadores de eventos
+        escuchadores();
 
-        btnfecha = findViewById(R.id.button5Fecha);
-        horaAct = findViewById(R.id.button2Horas);
-        btnPedirCita = findViewById(R.id.buttonPedirCita);
-
-        //TextView
-        fechatxt = findViewById(R.id.editFechatxt);
-        tipoVehiculo = findViewById(R.id.txtViewTipoVehiculo);
-        precio = findViewById(R.id.editTextText5);
-
+        //Cargamos en el Spinner las matriculas y el tipo vehiculo correspondiente que tiene el usuario
         new infoVehiculo().execute(idActual);
+        //Cargamos el Spinner con los tipos de inspeccion disponibles
         new tipoInspeccion().execute();
 
+    }
+
+    private void escuchadores() {
+        //Boton para pedir la cita
         btnPedirCita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,27 +73,13 @@ public class Citas extends AppCompatActivity {
 
                         String fech = fechatxt.getText().toString().trim();
                         String hor = horas.getSelectedItem().toString().trim();
-                        String idUs = idActual;
                         String idVeh = idVehiculoSeleccionado;
                         String tipoInsp = idIspeccion;
                         String tipoVehi = idTipoVehiculo;
 
-                        //Toast.makeText(Citas.this,fech+" "+hor+" "+idUs+" "+idVeh+" "+tipoInsp+" "+tipoVehi,Toast.LENGTH_LONG).show();
                         new pedirCita().execute(fech, hor, idVeh, tipoInsp, tipoVehi);
-                        new Thread(new Runnable() {
-                            public void run() {
-                                // Reemplaza con tu correo y contraseña de Gmail
-                                String username = "jorgollo04@gmail.com";
-                                String password = "recujorllo04";
-                                String to = "jorgollo04@gmail.com";
-                                String subject = "Asunto del correo";
-                                String message = "Cuerpo del correo";
 
-                                MailSender.sendMail(username, password, to, subject, message);
-                            }
-                        }).start();
-
-
+                        //Recargamos la vista para que se vuelvan los campos vacios
                         Intent intent = new Intent(Citas.this, Citas.class);
                         intent.putExtra("idUsu", idActual);
                         startActivity(intent);
@@ -113,6 +94,7 @@ public class Citas extends AppCompatActivity {
             }
         });
 
+        //Boton para activar las horas disponibles
         horaAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +107,7 @@ public class Citas extends AppCompatActivity {
             }
         });
 
+        //Spinner que carga las matriculas de los vehiculos del usuario
         matricula.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -133,15 +116,14 @@ public class Citas extends AppCompatActivity {
                 //tipoVehiculo.setText(valorSeleccionado+"");
                 String itemSeleccionado = String.valueOf(valorSeleccionado);
                 new tipoVehiculoID().execute(itemSeleccionado);
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
+        //Spinner que carga los tipos de inspecciones disponibles
         tipoInspeccion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -150,26 +132,25 @@ public class Citas extends AppCompatActivity {
                 idIspeccion = String.valueOf(tipoinspeccion.getId());
                 //tipoVehiculo.setText(valorSeleccionado+"");
                 String itemSeleccionado = String.valueOf(valorSeleccionado);
-
-
                 precio.setText(itemSeleccionado + " €");
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
+        //Boton que carga las fechas disponibles
         btnfecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = 1;
-                fecha(i);
+                fecha();
             }
 
         });
+    }
 
+    private void menuInferior() {
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -215,6 +196,24 @@ public class Citas extends AppCompatActivity {
         });
     }
 
+    private void initComponent() {
+        //Spinner
+        matricula = findViewById(R.id.spinner3Matricula);
+        tipoInspeccion = findViewById(R.id.spinner2TipoInspec);
+        horas = findViewById(R.id.spinnerHora);
+        //Botones
+        inicio = findViewById(R.id.buttonInicio3);
+        car = findViewById(R.id.buttonCar3);
+        cita = findViewById(R.id.buttonCitas3);
+        perfil = findViewById(R.id.buttonPefil3);
+        btnfecha = findViewById(R.id.button5Fecha);
+        horaAct = findViewById(R.id.button2Horas);
+        btnPedirCita = findViewById(R.id.buttonPedirCita);
+        //TextView
+        fechatxt = findViewById(R.id.editFechatxt);
+        tipoVehiculo = findViewById(R.id.txtViewTipoVehiculo);
+        precio = findViewById(R.id.editTextText5);
+    }
 
     //Extraemos la matricula y el tipo de vehiculo
     private class infoVehiculo extends AsyncTask<String, Void, String> {
@@ -405,7 +404,8 @@ public class Citas extends AppCompatActivity {
     }
 
 
-    private void fecha(int i) {
+    //Metodo que se encarga de mostrar las fechas disponibles cuando pulsas el boton fecha
+    private void fecha() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -419,14 +419,8 @@ public class Citas extends AppCompatActivity {
 
                 int dayOfWeek = selectedDate.get(Calendar.DAY_OF_WEEK);
                 if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
-                    switch (i) {
-                        case 1:
-                            fechatxt.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
-                            break;
-                        case 0:
-                            fechatxt.setText("");
-                            break;
-                    }
+                    fechatxt.setText(String.format("%04d-%02d-%02d", year, month + 1, day));
+
                 } else {
                     Toast.makeText(Citas.this, "No puedes seleccionar sábados o domingos.", Toast.LENGTH_LONG).show();
                 }

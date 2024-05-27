@@ -23,46 +23,39 @@ import java.util.Objects;
 
 public class Vehiculos extends AppCompatActivity {
     String idActual;
-    EditText matricula, modelo, año, matriculaEli;
+    EditText matricula, modelo, año;
 
     Spinner tipoVehiculo, marca;
-    private Button inicio, car, cita, perfil, añadir, eliminar;
+    private Button inicio, car, cita, perfil, añadir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehiculos);
+
+        //Obtener ID de usuario actual
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
-        //EditText
-        matricula = findViewById(R.id.editTextText8);
-        modelo = findViewById(R.id.editTextText10);
-        año = findViewById(R.id.editTextVehiAno);
-        matriculaEli = findViewById(R.id.editTextText11);
-        //Spinner
-        tipoVehiculo = findViewById(R.id.spinnerTipoVehiculo);
-        marca = findViewById(R.id.spinnerMarca);
+        //Inicializamos los componentes
+        initComponent();
 
-        //Botones
-        inicio = findViewById(R.id.buttonInicio2);
-        car = findViewById(R.id.buttonCar2);
-        cita = findViewById(R.id.buttonCitas2);
-        perfil = findViewById(R.id.buttonPefil2);
-        añadir = findViewById(R.id.button3);
-        eliminar = findViewById(R.id.button4);
-
-
-        //String[]datosSpinner = {"Hola","Adios"};
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item, datosSpinner);
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        //Cargamos los tipos de vehiculos disponibles
         new tipoVehiculo().execute();
+
+        //Cargamos las marcas disponibles
         new marcasVehiculo().execute();
 
-        // Asignar adaptador al Spinner
-        //tipoVehiculo.setAdapter(adapter);
+        //Menu botones inferior
+        menuInferior();
 
+        //Boton para añadir Vehiculo
+        añadirVehiculo();
+
+
+    }
+
+    private void añadirVehiculo() {
         añadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,21 +87,9 @@ public class Vehiculos extends AppCompatActivity {
                 }
             }
         });
-        eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String matriEli = matriculaEli.getText().toString().toUpperCase().trim();
+    }
 
-                if(!matriEli.isEmpty()){
-                    new borrarVehiculo().execute(idActual,matriEli);
-                    matriculaEli.setText("");
-                }else {
-                    Toast.makeText(Vehiculos.this, "Rellena el campo", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
+    private void menuInferior() {
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +135,23 @@ public class Vehiculos extends AppCompatActivity {
         });
     }
 
+    private void initComponent() {
+        //EditText
+        matricula = findViewById(R.id.editTextText8);
+        modelo = findViewById(R.id.editTextText10);
+        año = findViewById(R.id.editTextVehiAno);
+        //Spinner
+        tipoVehiculo = findViewById(R.id.spinnerTipoVehiculo);
+        marca = findViewById(R.id.spinnerMarca);
+
+        //Botones
+        inicio = findViewById(R.id.buttonInicio2);
+        car = findViewById(R.id.buttonCar2);
+        cita = findViewById(R.id.buttonCitas2);
+        perfil = findViewById(R.id.buttonPefil2);
+        añadir = findViewById(R.id.button3);
+    }
+
     private class tipoVehiculo extends AsyncTask<String, Void, String> {
 
         @Override
@@ -180,7 +178,6 @@ public class Vehiculos extends AppCompatActivity {
             tipoVehiculo.setAdapter(adapter);
         }
     }
-
     private class anadirVehiculo extends AsyncTask<String, Void, String> {
 
         @Override
@@ -207,27 +204,6 @@ public class Vehiculos extends AppCompatActivity {
                 modelo.setText("");
                 año.setText("");
             }
-
-        }
-    }
-
-
-    private class borrarVehiculo extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            HashMap<String, String> postDataParams = new HashMap<>();
-            postDataParams.put("idUser", params[0]);
-            postDataParams.put("matricula", params[1]);
-
-
-            return ConexiónPHP.enviarPost("http://192.168.56.1/itvExtremenaPHP/eliminarVehiculo.php",postDataParams);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(Vehiculos.this, result, Toast.LENGTH_LONG).show();
 
         }
     }

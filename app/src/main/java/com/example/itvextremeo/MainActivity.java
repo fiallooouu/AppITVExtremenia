@@ -17,27 +17,32 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    EditText correo, contraseña;
-    Button iniciarSesion, registrar;
-
+    private EditText correo, contraseña;
+    private Button iniciarSesion, registrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //EditTexts
+        initComponent();
+        setupDefaultCredentials();
+        listeners();
+    }
+
+    private void initComponent() {
         correo = findViewById(R.id.editTextCorreo);
         contraseña = findViewById(R.id.editTextPassword);
-
-        //Botones
         iniciarSesion = findViewById(R.id.buttonIniciarSesion);
         registrar = findViewById(R.id.buttonRegistrar);
+    }
 
+    private void setupDefaultCredentials() {
         correo.setText("maniesolis13@gmail.com");
         contraseña.setText("Secujorllo04");
+    }
 
+    private void listeners() {
         iniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,25 +60,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Comprobamos los campos de inicio sesion
     private void comprobarUsuario() {
         String correo1 = correo.getText().toString().trim();
         String contraseña1 = contraseña.getText().toString().trim();
 
         if (!correo1.isEmpty() && !contraseña1.isEmpty()) {
-                String contraCifra = hashPassword(contraseña1);
-                new AgregarUsuarioTask().execute(correo1, contraCifra);
+            String contraseñaCifrada = hashPassword(contraseña1);
+            new AgregarUsuarioTask().execute(correo1, contraseñaCifrada);
         } else {
             Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    //Pasamos los datos de los campos al PHP
     private class AgregarUsuarioTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
-
             HashMap<String, String> postDataParams = new HashMap<>();
             postDataParams.put("correo", params[0]);
             postDataParams.put("contrasena", params[1]);
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             String[] partes = result.trim().split(",");
-            // Asignar cada parte a las variables correspondientes
             String ID = partes[0];
             String opc = partes[1];
 
@@ -94,13 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else if (opc.equals("false")) {
-                Toast.makeText(MainActivity.this, "Credenciales erroneas", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Credenciales erróneas", Toast.LENGTH_LONG).show();
             }
         }
-
     }
 
-    //Ocultar teclado fuera cuando se pulsa fuera de las cajas de texto
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Utils.hideSoftKeyboard(this);

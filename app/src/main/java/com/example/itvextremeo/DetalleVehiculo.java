@@ -15,19 +15,52 @@ import java.util.HashMap;
 
 public class DetalleVehiculo extends AppCompatActivity {
 
-
-    String idActual;
-    TextView matricula, marca, modelo, año, tipoVehiculo, titular;
-    Button atras, eliminarVehiculo;
+    private String idActual;
+    private TextView matricula, marca, modelo, año, tipoVehiculo, titular;
+    private Button atras, eliminarVehiculo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_vehiculo);
 
+        //Obtener ID de usuario actual
         Intent intent = getIntent();
         idActual = intent.getStringExtra("idUsu");
 
+        //Inicializar componentes
+        initComponent(intent);
+        //Escuchadores de botones
+        escuchadoresBTN();
+
+    }
+
+    private void escuchadoresBTN() {
+        //Boton para volver a Inicio
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetalleVehiculo.this, Inicio.class);
+                intent.putExtra("idUsu", idActual);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+            }
+
+        });
+
+        //Boton de eliminar vehiculo
+        eliminarVehiculo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String matriEli = matricula.getText().toString().trim();
+                new borrarVehiculo().execute(idActual,matriEli);
+
+            }
+        });
+    }
+
+    private void initComponent(Intent intent) {
         //EditText
         matricula = findViewById(R.id.txtDetaMatri);
         marca = findViewById(R.id.txtDetaMarca);
@@ -46,30 +79,9 @@ public class DetalleVehiculo extends AppCompatActivity {
         año.setText(intent.getStringExtra("ano"));
         tipoVehiculo.setText(intent.getStringExtra("tipoVehi"));
         titular.setText(intent.getStringExtra("titular"));
-
-
-        atras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetalleVehiculo.this, Inicio.class);
-                intent.putExtra("idUsu", idActual);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-            }
-
-        });
-
-        eliminarVehiculo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String matriEli = matricula.getText().toString().trim();
-                    new borrarVehiculo().execute(idActual,matriEli);
-
-            }
-        });
     }
 
+    //Clase que se encarga de eliminar el vehiculo
     private class borrarVehiculo extends AsyncTask<String, Void, String> {
 
         @Override
