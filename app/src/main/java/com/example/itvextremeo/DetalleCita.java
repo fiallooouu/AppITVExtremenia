@@ -1,7 +1,9 @@
 package com.example.itvextremeo;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -49,7 +51,27 @@ public class DetalleCita extends AppCompatActivity {
         eliminarCita.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new borrarCita().execute(codigo.getText().toString());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetalleCita.this);
+                builder.setTitle("Eliminar Cita");
+                builder.setMessage("¿Estás seguro de que deseas eliminar la cita?");
+
+                builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new borrarCita().execute(codigo.getText().toString());
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }
