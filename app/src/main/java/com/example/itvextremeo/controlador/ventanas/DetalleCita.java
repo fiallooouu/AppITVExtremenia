@@ -1,4 +1,4 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.ventanas;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.itvextremeo.R;
+import com.example.itvextremeo.Utils;
+import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 
 import java.util.HashMap;
 

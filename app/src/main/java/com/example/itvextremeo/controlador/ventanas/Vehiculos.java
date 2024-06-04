@@ -1,4 +1,4 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.ventanas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,13 +13,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.itvextremeo.R;
+import com.example.itvextremeo.Utils;
+import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 import com.example.itvextremeo.modelo.MarcasVehiculo;
 import com.example.itvextremeo.modelo.TipoVehiculo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class Vehiculos extends AppCompatActivity {
     String idActual;

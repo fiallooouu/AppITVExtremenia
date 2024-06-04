@@ -101,6 +101,7 @@ public class Utils {
         StringBuilder titleCase = new StringBuilder();
         boolean nextTitleCase = true;
 
+
         for (char c : input.toCharArray()) {
             if (Character.isSpaceChar(c)) {
                 nextTitleCase = true;

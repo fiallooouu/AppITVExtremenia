@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Registrar">
+    tools:context=".controlador.ventanas.Registrar">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
             android:backgroundTint="@color/white"
             android:ems="10"
             android:hint="Telefono"
-            android:inputType="text"
+            android:inputType="number"
             android:paddingStart="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"

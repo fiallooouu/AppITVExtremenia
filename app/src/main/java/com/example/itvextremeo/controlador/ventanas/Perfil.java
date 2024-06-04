@@ -1,4 +1,4 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.ventanas;
 
 import static com.example.itvextremeo.Utils.hashPassword;
 
@@ -11,12 +11,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.example.itvextremeo.R;
+import com.example.itvextremeo.Utils;
+import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 
 import java.util.HashMap;
 
@@ -25,6 +28,7 @@ public class Perfil extends AppCompatActivity {
     private Switch modificarDatos ,cambiarContraseña;
     private EditText nombre, apellido, telefono, correo, contraseña, repetirContraseña;
     private Button inicio, car, cita, perfil, btnCambiarContraseña, actualizar, cerrarSesion;
+    private View layoutModificar;
 
 
     @Override
@@ -87,6 +91,7 @@ public class Perfil extends AppCompatActivity {
                 if (isChecked) {
                     cambiarContraseña.setChecked(false);
                     actualizar.setVisibility(View.VISIBLE);
+                    layoutModificar.setVisibility(View.VISIBLE);
                 } else {
                     actualizar.setVisibility(View.GONE);
                 }
@@ -102,12 +107,14 @@ public class Perfil extends AppCompatActivity {
                     contraseña.setVisibility(View.VISIBLE);
                     repetirContraseña.setVisibility(View.VISIBLE);
                     btnCambiarContraseña.setVisibility(View.VISIBLE);
+                    layoutModificar.setVisibility(View.GONE);
                 } else {
                     contraseña.setVisibility(View.GONE);
                     contraseña.setText("");
                     repetirContraseña.setVisibility(View.GONE);
                     repetirContraseña.setText("");
                     btnCambiarContraseña.setVisibility(View.GONE);
+                    layoutModificar.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -129,6 +136,7 @@ public class Perfil extends AppCompatActivity {
                             if(Utils.validarCorreo(corr)) {
                                 new modificarDatosPerfil().execute(idActual, name, apel, tele, corr);
                                 new cargarPerfil().execute(idActual);
+                                modificarDatos.setChecked(false);
                             }else{
                                 Toast.makeText(Perfil.this, "Formato de correo incorrecto", Toast.LENGTH_LONG).show();
                             }
@@ -156,6 +164,7 @@ public class Perfil extends AppCompatActivity {
                         new modificarContraseña().execute(idActual, contraCifra);
                         contraseña.setText("");
                         repetirContraseña.setText("");
+                        cambiarContraseña.setChecked(false);
                     }else{
                         Toast.makeText(Perfil.this, "Formato de contraseñas erroneos", Toast.LENGTH_LONG).show();
                     }
@@ -230,6 +239,8 @@ public class Perfil extends AppCompatActivity {
         correo = findViewById(R.id.editTextPerfilCorreo);
         contraseña = findViewById(R.id.editTextTextNuevaPassword);
         repetirContraseña = findViewById(R.id.editTextTextRepetirNuevaPassword4);
+        //Layout
+        layoutModificar = findViewById(R.id.layoutModifica);
     }
     private class modificarContraseña extends AsyncTask<String, Void, String> {
 

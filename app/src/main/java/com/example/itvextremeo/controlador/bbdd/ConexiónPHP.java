@@ -1,4 +1,4 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.bbdd;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

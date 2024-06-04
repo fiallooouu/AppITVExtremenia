@@ -1,4 +1,4 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.ventanas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.itvextremeo.R;
+import com.example.itvextremeo.Utils;
+import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 import com.example.itvextremeo.modelo.Cita;
 import com.example.itvextremeo.modelo.Vehiculo;
 

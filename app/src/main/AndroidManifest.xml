@@ -16,30 +16,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".DetalleCita"
+            android:name=".controlador.ventanas.DetalleCita"
             android:exported="false" />
         <activity
-            android:name=".DetalleVehiculo"
+            android:name=".controlador.ventanas.DetalleVehiculo"
             android:exported="false" />
         <activity
-            android:name=".Perfil"
+            android:name=".controlador.ventanas.Perfil"
             android:exported="false" />
         <activity
-            android:name=".Citas"
+            android:name=".controlador.ventanas.Citas"
             android:exported="false" />
         <activity
-            android:name=".Vehiculos"
+            android:name=".controlador.ventanas.Vehiculos"
             android:exported="false" />
         <activity
-            android:name=".Inicio"
+            android:name=".controlador.ventanas.Inicio"
             android:exported="false"
             android:label="@string/title_activity_inicio"
             android:theme="@style/Theme.ITVExtremeño" />
         <activity
-            android:name=".Registrar"
+            android:name=".controlador.ventanas.Registrar"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".controlador.ventanas.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

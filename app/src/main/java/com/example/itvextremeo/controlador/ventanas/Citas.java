@@ -1,9 +1,8 @@
-package com.example.itvextremeo;
+package com.example.itvextremeo.controlador.ventanas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -11,13 +10,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.itvextremeo.DatePickerDialog;
+import com.example.itvextremeo.R;
+import com.example.itvextremeo.Utils;
+import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 import com.example.itvextremeo.modelo.InfoVehiculo;
 import com.example.itvextremeo.modelo.TipoInspeccion;
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_azul"
-    tools:context=".DetalleCita">
+    tools:context=".controlador.ventanas.DetalleCita">
 
     <LinearLayout
         android:id="@+id/linearLayout7"
