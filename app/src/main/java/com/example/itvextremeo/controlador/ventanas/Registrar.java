@@ -24,8 +24,8 @@ import java.util.HashMap;
 
 public class Registrar extends AppCompatActivity {
 
-    EditText nombre, apellido, telefono, correo, contrasena, repetirContrasena;
-    Button registrarse, cancelar;
+    private EditText nombre, apellido, telefono, correo, contrasena, repetirContrasena;
+    private Button registrarse, cancelar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

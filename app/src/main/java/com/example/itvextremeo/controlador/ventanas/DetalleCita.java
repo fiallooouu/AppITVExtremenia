@@ -20,10 +20,9 @@ import java.util.HashMap;
 
 public class DetalleCita extends AppCompatActivity {
 
-    String idActual;
-    TextView codigo,matricula,fechaHora,tipoInspe,tipoVehi,descrip;
-
-    Button atras, eliminarCita;
+    private String idActual;
+    private TextView codigo,matricula,fechaHora,tipoInspe,tipoVehi,descrip;
+    private Button atras, eliminarCita;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

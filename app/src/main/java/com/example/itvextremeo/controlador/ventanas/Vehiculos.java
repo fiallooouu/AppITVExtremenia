@@ -24,10 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Vehiculos extends AppCompatActivity {
-    String idActual;
-    EditText matricula, modelo, año;
-
-    Spinner tipoVehiculo, marca;
+    private String idActual;
+    private EditText matricula, modelo, año;
+    private Spinner tipoVehiculo, marca;
     private Button inicio, car, cita, perfil, añadir;
 
     @Override

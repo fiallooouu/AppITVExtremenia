@@ -24,7 +24,7 @@ import com.example.itvextremeo.controlador.bbdd.ConexiónPHP;
 import java.util.HashMap;
 
 public class Perfil extends AppCompatActivity {
-    String idActual;
+    private String idActual;
     private Switch modificarDatos ,cambiarContraseña;
     private EditText nombre, apellido, telefono, correo, contraseña, repetirContraseña;
     private Button inicio, car, cita, perfil, btnCambiarContraseña, actualizar, cerrarSesion;
