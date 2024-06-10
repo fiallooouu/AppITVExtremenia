@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Codigo Cita"
+            android:text="Código Cita"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Matricula"
+            android:text="Matrícula"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -128,7 +128,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Tipo Vehiculo"
+            android:text="Tipo Vehículo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Descripcción"
+            android:text="Descripción"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -174,13 +174,12 @@
             android:scrollHorizontally="false" />
 
 
-
         <Button
             android:id="@+id/btnDetaCitaAtras"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/azul_desactivado"
-            android:text="Atras"
+            android:text="Atrás"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />

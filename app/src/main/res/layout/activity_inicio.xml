@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/azul_desactivado"
             android:drawableTop="@drawable/caricon"
-            android:text="Vehiculos"
+            android:text="Vehículos"
             android:textColor="#FFFFFF"
             android:textSize="10sp" />
 
@@ -150,7 +150,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Mis Vehiculos"
+            android:text="Mis Vehículos"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold" />

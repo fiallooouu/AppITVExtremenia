@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#267aea"
-            android:text="¿No tienes cuenta? Registrate"
+            android:text="¿No tienes cuenta? Regístrate"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />

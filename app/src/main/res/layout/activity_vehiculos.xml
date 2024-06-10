@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="3dp"
-            android:text="Matricula"
+            android:text="Matrícula"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Tipo Vehiculo"
+            android:text="Tipo Vehículo"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
@@ -159,7 +159,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="@color/azul_desactivado"
-            android:text="Añadir Vehiculo"
+            android:text="Añadir Vehículo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -198,7 +198,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/azul_activado"
             android:drawableTop="@drawable/caricon"
-            android:text="Vehiculos"
+            android:text="Vehículos"
             android:textColor="#FFFFFF"
             android:textSize="10sp" />
 

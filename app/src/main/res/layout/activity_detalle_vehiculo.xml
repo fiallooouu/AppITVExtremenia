@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Matricula"
+            android:text="Matrícula"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -127,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
-            android:text="Tipo Vehiculo"
+            android:text="Tipo Vehículo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -177,7 +177,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/azul_desactivado"
-            android:text="Atras"
+            android:text="Atrás"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -188,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:backgroundTint="#BC1E1E"
-            android:text="Eliminar Vehiculo"
+            android:text="Eliminar Vehículo"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold" />
